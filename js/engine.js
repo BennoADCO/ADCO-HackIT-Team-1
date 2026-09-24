@@ -866,6 +866,28 @@ function sndRecipe(name) {
             sndNote({ wave: 'square', pitch: [200, 100], length: 0.04, loud: 0.08 });
             return true;
 
+        case 'creak':
+            // Steel about to give way: a long, low, groaning bend.
+            sndNote({ wave: 'sawtooth', pitch: [90, 140, 118], length: 1.5, loud: 0.16,
+                      hold: true, muffle: 700, wobbleSpeed: 7, wobbleDepth: 5 });
+            sndNote({ wave: 'triangle', pitch: [170, 260], at: 0.25, length: 1.1, loud: 0.09,
+                      hold: true, muffle: 1300, wobbleSpeed: 11, wobbleDepth: 9 });
+            return true;
+
+        case 'crash':
+            // The crane hitting the deck: clang, then a deep rolling boom.
+            sndHiss({ filter: 'lowpass', from: 6000, to: 200, length: 0.9, loud: 0.5 });
+            sndNote({ wave: 'square', pitch: [900, 300], length: 0.22, loud: 0.22, muffle: 2600 });
+            sndNote({ wave: 'sine', pitch: [150, 35], length: 1.1, loud: 0.5, muffle: 500 });
+            sndNote({ wave: 'sawtooth', pitch: [70, 30], at: 0.05, length: 0.9, loud: 0.2, muffle: 400 });
+            return true;
+
+        case 'heartbeat':
+            // Two slow thumps, felt more than heard. Used as the eyes close.
+            sndNote({ wave: 'sine', pitch: [80, 40], length: 0.18, loud: 0.45, muffle: 300 });
+            sndNote({ wave: 'sine', pitch: [70, 35], at: 0.3, length: 0.24, loud: 0.32, muffle: 280 });
+            return true;
+
         default:
             // Not a sound we know - do nothing.
             return false;
