@@ -82,7 +82,15 @@ function renderMap() {
   var ids = allLocationIds();
 
   for (var i = 0; i < ids.length; i++) {
-    els.mapPins.appendChild(buildLocationPin(ids[i]));
+    var place = LOCATIONS[ids[i]];
+
+    // A place with no pin position cannot be put anywhere on the
+    // picture. The checker already shouts about this on screen; here we
+    // just leave it off rather than piling it up in the corner.
+    if (typeof place.mapX !== 'number' || typeof place.mapY !== 'number') {
+      continue;
+    }
+    els.mapPins.appendChild(buildMapPin(ids[i]));
   }
 
   showTimeOfDay();
@@ -116,46 +124,58 @@ function waitForNextTime() {
   showMap();
 }
 
-// One glowing dot sat on top of a place's pin in the map picture, at
-// the x/y percentage set for it in data/locations.js. Hovering (or,
-// on a touchscreen, tapping once) lights it up and shows its name.
-function buildLocationPin(locationId) {
+// ----------------------------------------------------------------
+//  One clickable pin on the town map
+// ----------------------------------------------------------------
+//  The picture already has the pins and the place names drawn on it,
+//  so this does not repeat them. All it adds is a ring you can click,
+//  sitting exactly on top of the drawn pin, and - when somebody is
+//  there - a little tag underneath saying who.
+
+function buildMapPin(locationId) {
   var place = LOCATIONS[locationId];
   var people = charactersAt(locationId);
 
   var pin = document.createElement('button');
-  pin.className = 'location-pin';
-  pin.style.left = place.x + '%';
-  pin.style.top = place.y + '%';
-  pin.setAttribute('aria-label', place.name);
+  pin.className = 'map-pin';
+  if (people.length > 0) {
+    pin.className = pin.className + ' has-people';
+  }
+
+  // Percentages, so the pin stays on its building at any window size.
+  pin.style.left = place.mapX + '%';
+  pin.style.top = place.mapY + '%';
+
   pin.onclick = function () {
     enterLocation(locationId);
   };
 
-  var tip = document.createElement('span');
-  tip.className = 'pin-tip';
-
-  var name = document.createElement('span');
-  name.className = 'pin-name';
-  name.textContent = place.name;
-  tip.appendChild(name);
-
-  // Who is here, so the player has a reason to pick one place over another.
-  var who = document.createElement('span');
-  who.className = 'pin-who';
-  if (people.length === 0) {
-    who.textContent = 'Nobody about';
-    who.className = who.className + ' is-empty';
-  } else {
-    var names = [];
-    for (var i = 0; i < people.length; i++) {
-      names.push(CHARACTERS[people[i]].name);
-    }
-    who.textContent = names.join(', ');
+  // The names of whoever is here. This is the whole reason to pick one
+  // place over another, so it has to be readable at a glance.
+  var names = [];
+  for (var i = 0; i < people.length; i++) {
+    names.push(CHARACTERS[people[i]].name);
   }
-  tip.appendChild(who);
 
-  pin.appendChild(tip);
+  // Hovering says where you are about to go, which the ring alone does
+  // not - the place names are part of the picture, not of these pins.
+  if (names.length > 0) {
+    pin.title = place.name + ' - ' + names.join(', ');
+  } else {
+    pin.title = place.name + ' - nobody about';
+  }
+
+  var ring = document.createElement('span');
+  ring.className = 'map-pin-ring';
+  pin.appendChild(ring);
+
+  if (names.length > 0) {
+    var who = document.createElement('span');
+    who.className = 'map-pin-who';
+    who.textContent = names.join(', ');
+    pin.appendChild(who);
+  }
+
   return pin;
 }
 

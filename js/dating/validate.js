@@ -27,11 +27,41 @@ function checkAllCharacters() {
   if (allLocationIds().length === 0) {
     problems.push('No locations loaded at all. Check data/locations.js is listed in dating.html.');
   }
+  checkLocations(problems);
 
   for (var i = 0; i < ids.length; i++) {
     checkOneCharacter(ids[i], problems);
   }
   return problems;
+}
+
+// ----------------------------------------------------------------
+//  The places
+// ----------------------------------------------------------------
+//  A place with no pin position is not drawn on the map at all, which
+//  looks exactly like the game losing it. Say so instead.
+
+function checkLocations(problems) {
+  var ids = allLocationIds();
+  var where = 'data/locations.js';
+
+  for (var i = 0; i < ids.length; i++) {
+    var place = LOCATIONS[ids[i]];
+    var label = where + ', "' + ids[i] + '"';
+
+    if (!place.name) {
+      problems.push(label + ': no "name", so the map has nothing to call it.');
+    }
+
+    if (typeof place.mapX !== 'number' || typeof place.mapY !== 'number') {
+      problems.push(label + ': no "mapX"/"mapY", so it has no pin and cannot be visited.');
+      continue;
+    }
+    if (place.mapX < 0 || place.mapX > 100 || place.mapY < 0 || place.mapY > 100) {
+      problems.push(label + ': "mapX"/"mapY" are ' + place.mapX + '/' + place.mapY +
+                    '. They are percentages, so both must be between 0 and 100.');
+    }
+  }
 }
 
 function checkOneCharacter(id, problems) {
