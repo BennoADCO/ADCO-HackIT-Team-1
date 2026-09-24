@@ -16,9 +16,10 @@
      3. locations.js  - the places, onto the shelf
      4. each character - the people, onto the shelf
      5. validate.js   - the typo checker
-     6. screens.js    - the map and the scene
-     7. conversation.js - running a chat
-     8. main.js       - starts everything. Must be LAST.
+     6. pictures.js   - rubs the white background off the people
+     7. screens.js    - the map and the scene
+     8. conversation.js - running a chat
+     9. main.js       - starts everything. Must be LAST.
 
    ADDING A CHARACTER? Add a <script> line for them below, next to
    Mia's, or the game will never know they exist.
@@ -57,15 +58,18 @@
   <header class="map-header">
     <h1>Where to?</h1>
     <p class="map-sub">Pick somewhere. See who turns up.</p>
+    <!-- Who is out depends on the hour, so the hour has to be visible. -->
+    <p id="time-of-day" class="time-of-day"></p>
   </header>
 
   <div id="map-stage" class="map-stage">
-    <img class="map-image" src="assest/Place/Map.png" alt="A map of the town">
+    <img class="map-image" src="assets/places/map.png" alt="A map of the town">
     <div id="map-pins" class="map-pins"></div>
   </div>
 
   <footer class="map-footer">
     <p id="save-hint"></p>
+    <button id="wait-button" class="plain-button"></button>
     <button id="wipe-button" class="plain-button">Start again</button>
   </footer>
 </section>
@@ -107,10 +111,14 @@
 <script src="data/locations.js"></script>
 
 <!-- The people. One line per character. -->
-<script src="characters/mia/mia.js"></script>
+<script src="characters/goth/goth.js"></script>
+<script src="characters/lumberjack/lumberjack.js"></script>
+<script src="characters/nurse/nurse.js"></script>
+<script src="characters/party/party.js"></script>
 
 <!-- The machinery. main.js must stay last. -->
 <script src="js/dating/validate.js"></script>
+<script src="js/dating/pictures.js"></script>
 <script src="js/dating/screens.js"></script>
 <script src="js/dating/conversation.js"></script>
 <script src="js/dating/main.js"></script>

@@ -69,6 +69,9 @@ function setUpControls() {
     }
   });
 
+  // "Wait until..." on the map, for when nobody is out yet.
+  els.waitButton.onclick = waitForNextTime;
+
   // "Start again" on the map.
   document.getElementById('wipe-button').onclick = function () {
     if (window.confirm('Forget everyone and start again?')) {

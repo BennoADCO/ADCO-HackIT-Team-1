@@ -35,6 +35,7 @@
 var chat = {
   characterId: '',   // who we are talking to
   nodeId: '',        // which node we are on
+  sceneNode: '',     // the scene we opened on, so it can be ticked off
   lineIndex: 0,      // which line of that node is on screen
   finished: false    // true once the conversation has closed
 };
@@ -42,7 +43,7 @@ var chat = {
 
 function startConversation(characterId) {
   var character = CHARACTERS[characterId];
-  var startNode = openingNodeFor(characterId);
+  var startNode = openingNodeFor(characterId, currentLocation);
 
   // Their story has run out, or their file is broken. Say something
   // rather than opening an empty box.
@@ -52,15 +53,13 @@ function startConversation(characterId) {
   }
 
   chat.characterId = characterId;
+  chat.sceneNode = startNode;
   chat.finished = false;
 
   getCharacterState(characterId).met = true;
 
   // Dress the set: the background of wherever we are, and the person.
-  var place = LOCATIONS[currentLocation];
-  if (place) {
-    els.sceneBg.style.backgroundImage = 'url("' + place.background + '")';
-  }
+  paintPlace(els.sceneBg, LOCATIONS[currentLocation]);
   setSpriteSource(els.sprite, character);
   els.sprite.className = 'sprite anchor-' + (character.anchor || 'right');
   els.speaker.textContent = character.name;
@@ -204,13 +203,26 @@ function chooseOption(option) {
 
 // "moveOn" true means this character's story steps forward, which is
 // usually what sends them somewhere new next time you look.
+//
+// Whatever else happens, this always finishes by putting the player
+// back on the map. There is no other way out of a scene, so nobody can
+// end up stuck in one.
 function endConversation(moveOn) {
   chat.finished = true;
 
+  // Tick this scene off, so a Shaun has something new to say next time
+  // you find them here rather than repeating themselves.
+  if (isSceneCharacter(chat.characterId) && chat.sceneNode) {
+    markSceneDone(chat.characterId, chat.sceneNode);
+  }
+
   if (moveOn) {
     advanceStage(chat.characterId);   // this saves as well
-  } else {
-    saveProgress();
   }
+
+  // Talking to someone takes a while. The clock moves on, which is
+  // what changes who is out and about next time you look at the map.
+  advanceTime();                      // this saves as well
+
   showMap();
 }

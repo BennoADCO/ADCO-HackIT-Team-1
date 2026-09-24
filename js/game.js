@@ -83,6 +83,13 @@ var game = {
     beatsDone: 0       // how many heartbeats have thumped as the eyes close
   },
 
+  // --- Handing over to the other page (see LEAVING FOR ANOTHER PAGE) ---
+  leaving: {
+    to: null,          // the page we are about to open ('' or null = staying put)
+    timer: 0,          // seconds left before we open it
+    failed: false      // true if the browser refused to open it
+  },
+
   // --- The look of the ground (made once when the page opens) ---
   site: { patches: [], pebbles: [] }
 };
@@ -151,6 +158,7 @@ function resetRun() {
   };
   resetTutorial();    // back to the first line of the script (see THE TUTORIAL)
   resetCutscene();    // no crane half way down from last time (see CUT SCENES)
+  resetLeaving();     // not on our way to another page (see LEAVING FOR ANOTHER PAGE)
 }
 
 function startRun() {
@@ -207,6 +215,7 @@ function updatePlaying(dt) {
   game.time += dt;
 
   updateTutorial(dt);   // the scripted opening, and the talking box
+  updateLeaving(dt);    // counting down to the second half of the game
 
   // During a cut scene the player is frozen: no walking, no throwing,
   // no aliens turning up, and nothing can hurt them. The only things
@@ -230,6 +239,62 @@ function updatePlaying(dt) {
 // True while the player has had control taken off them.
 function isFrozen() {
   return game.cutscene.running || game.cutscene.blackout;
+}
+
+
+// ----------------------------------------------------------------
+//  LEAVING FOR ANOTHER PAGE
+// ----------------------------------------------------------------
+//  The crane scene is the end of this page, not the end of the game.
+//  Once the eyes have shut and the foreman has said his last line, the
+//  tutorial script hits a  { goToPage: 'dating.html' }  instruction and
+//  we swap over to the second half.
+//
+//  The wait is deliberate. The screen is already black by then, so a
+//  moment of nothing makes it read as one continuous scene instead of
+//  a jump.
+
+function resetLeaving() {
+  game.leaving.to = null;
+  game.leaving.timer = 0;
+  game.leaving.failed = false;
+}
+
+// Start the countdown. Called by the tutorial script (see THE TUTORIAL).
+function startLeaving(page, waitSeconds) {
+  if (game.leaving.to) {
+    return;   // already on our way - don't start a second countdown
+  }
+  game.leaving.to = page;
+  game.leaving.failed = false;
+  if (typeof waitSeconds === 'number') {
+    game.leaving.timer = waitSeconds;
+  } else {
+    game.leaving.timer = 1;
+  }
+}
+
+function updateLeaving(dt) {
+  var leaving = game.leaving;
+  if (!leaving.to) {
+    return;   // nothing to do: we are staying on this page
+  }
+
+  leaving.timer = leaving.timer - dt;
+  if (leaving.timer > 0) {
+    return;   // not yet
+  }
+
+  var page = leaving.to;
+  leaving.to = null;   // only ever try this once
+
+  // Some locked-down browsers refuse to open another page. If that
+  // happens, say so on screen rather than sitting on black forever.
+  try {
+    window.location.href = page;
+  } catch (e) {
+    leaving.failed = true;
+  }
 }
 
 
@@ -869,6 +934,15 @@ function runTutorialSteps() {
       continue;
     }
 
+    if (step.goToPage) {
+      // Hand over to the other half of the game. Nothing after this
+      // matters, because that page is about to replace this one.
+      startLeaving(step.goToPage, step.after);
+      game.tutorial.step = game.tutorial.step + 1;
+      game.tutorial.running = false;
+      return;
+    }
+
     // An instruction we don't recognise (probably a typo in config.js).
     // Skip past it rather than getting stuck.
     game.tutorial.step = game.tutorial.step + 1;
@@ -1240,6 +1314,14 @@ function drawEyelids(closed) {
 function drawBlackout() {
   ctx.fillStyle = CONFIG.cutscene.crane.eyeColor;
   ctx.fillRect(0, 0, WIDTH, HEIGHT);
+
+  // Only ever seen if the browser refused to open the second half by
+  // itself. Tells the player how to get there by hand, instead of
+  // leaving them staring at a black screen.
+  if (game.leaving.failed) {
+    drawText(CONFIG.text.cannotOpenNextPage, WIDTH / 2, HEIGHT / 2,
+      { size: 22, color: '#9aa3b2', align: 'center' });
+  }
 }
 
 

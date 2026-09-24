@@ -82,6 +82,16 @@ html, body {
   font-size: clamp(15px, 1.4vw, 20px);
 }
 
+/* The time of day. Who is out depends on it, so it is the second most
+   important thing on the map after the places themselves. */
+.time-of-day {
+  margin: 14px 0 0;
+  color: var(--accent);
+  font-size: clamp(15px, 1.4vw, 20px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
 /* The town map picture, with clickable pins floating on top of it.
    The picture keeps its own shape (aspect-ratio) at any window size,
    so a pin's x/y percentage (set in data/locations.js) always lands
@@ -179,13 +189,17 @@ html, body {
   flex: 0 0 auto;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 20px;
+  gap: 14px;
   padding: 0 6vw 4vh;
   color: var(--ink-dim);
   font-size: 15px;
 }
-.map-footer p { margin: 0; }
+/* The saving note sits on the left and shoves the buttons over to the
+   right, so they stay together as a pair however many there are. */
+.map-footer p {
+  margin: 0;
+  margin-right: auto;
+}
 
 
 /* ================================================================

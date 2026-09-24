@@ -21,6 +21,8 @@ var currentLocation = '';  // where the player is standing right now
 function grabElements() {
   els.map = document.getElementById('map-screen');
   els.mapPins = document.getElementById('map-pins');
+  els.timeOfDay = document.getElementById('time-of-day');
+  els.waitButton = document.getElementById('wait-button');
   els.people = document.getElementById('people-screen');
   els.peopleTitle = document.getElementById('people-title');
   els.peopleList = document.getElementById('people-list');
@@ -49,6 +51,22 @@ function emptyOut(element) {
   }
 }
 
+// Paints a place onto something: its picture if it has one, otherwise
+// its flat colour. A place with no artwork yet still looks deliberate
+// rather than broken, so dialogue can be written long before anyone
+// has drawn anything.
+function paintPlace(element, place) {
+  if (!place) {
+    return;
+  }
+  if (place.background) {
+    element.style.backgroundImage = 'url("' + place.background + '")';
+  } else {
+    element.style.backgroundImage = 'none';
+  }
+  element.style.backgroundColor = place.colour || '#2a2f3a';
+}
+
 
 // ----------------------------------------------------------------
 //  The map
@@ -67,12 +85,35 @@ function renderMap() {
     els.mapPins.appendChild(buildLocationPin(ids[i]));
   }
 
+  showTimeOfDay();
+
   // A line at the bottom saying whether progress is being kept.
   if (saveWorks) {
     els.saveHint.textContent = 'Your progress saves automatically on this computer.';
   } else {
     els.saveHint.textContent = "This browser won't save: progress lasts until you close the tab.";
   }
+}
+
+// ----------------------------------------------------------------
+//  The clock
+// ----------------------------------------------------------------
+//  Who is out depends on the time of day, so the player has to be able
+//  to see it, and has to be able to move it on without talking to
+//  somebody. Otherwise an empty map would be a dead end.
+
+function showTimeOfDay() {
+  els.timeOfDay.textContent = TIME_SLOTS[currentTimeIndex()].name;
+
+  var nextSlot = (currentTimeIndex() + 1) % TIME_SLOTS.length;
+  els.waitButton.textContent = 'Wait until ' + TIME_SLOTS[nextSlot].name;
+}
+
+// Let the hours pass without meeting anyone, and go back to the map to
+// see who that has brought out.
+function waitForNextTime() {
+  advanceTime();
+  showMap();
 }
 
 // One glowing dot sat on top of a place's pin in the map picture, at
@@ -140,7 +181,7 @@ function enterLocation(locationId) {
 // Two or more people in one place: let the player choose.
 function showPeoplePicker(locationId, people) {
   els.peopleTitle.textContent = LOCATIONS[locationId].name;
-  els.people.style.backgroundImage = 'url("' + LOCATIONS[locationId].background + '")';
+  paintPlace(els.people, LOCATIONS[locationId]);
 
   emptyOut(els.peopleList);
   for (var i = 0; i < people.length; i++) {
@@ -181,14 +222,25 @@ function buildPersonButton(characterId) {
 // look like a broken button.
 function showNobodyHere(locationId) {
   els.peopleTitle.textContent = LOCATIONS[locationId].name;
-  els.people.style.backgroundImage = 'url("' + LOCATIONS[locationId].background + '")';
+  paintPlace(els.people, LOCATIONS[locationId]);
 
   emptyOut(els.peopleList);
 
+  // Say WHY it is empty. "Nobody here" on its own reads like a bug;
+  // naming the time of day tells the player what to do about it.
   var message = document.createElement('p');
   message.className = 'nobody-here';
-  message.textContent = 'There is nobody here right now.';
+  message.textContent = 'Nobody here in the ' +
+    TIME_SLOTS[currentTimeIndex()].name.toLowerCase() + '.';
   els.peopleList.appendChild(message);
+
+  // The way out of an empty map: let the hours pass.
+  var nextSlot = (currentTimeIndex() + 1) % TIME_SLOTS.length;
+  var wait = document.createElement('button');
+  wait.className = 'plain-button';
+  wait.textContent = 'Wait until ' + TIME_SLOTS[nextSlot].name;
+  wait.onclick = waitForNextTime;
+  els.peopleList.appendChild(wait);
 
   var back = document.createElement('button');
   back.className = 'plain-button';
@@ -207,6 +259,10 @@ function showNobodyHere(locationId) {
 // Points a picture element at a character's sprite. If that file is
 // missing, a plain stand-in is drawn instead, so a character with no
 // artwork yet still shows up and can still be talked to.
+//
+// The character pictures are drawn on white, so on the way through we
+// ask pictures.js to rub that white background out. If it cannot, the
+// picture is shown as it is and the game carries on regardless.
 function setSpriteSource(imageElement, character) {
   imageElement.alt = character.name;
   imageElement.onerror = function () {
@@ -214,10 +270,23 @@ function setSpriteSource(imageElement, character) {
                                    // stand-in would loop forever
     imageElement.src = placeholderSprite(character.name);
   };
-  if (character.sprite) {
-    imageElement.src = character.sprite;
-  } else {
+
+  // No picture drawn for them yet: show the stand-in.
+  if (!character.sprite) {
     imageElement.src = placeholderSprite(character.name);
+    return;
+  }
+
+  // Cleaned this one up earlier: use the copy we kept.
+  if (cleanedPictures[character.sprite]) {
+    imageElement.src = cleanedPictures[character.sprite];
+    return;
+  }
+
+  // Show it as it is right now, then clean it up and swap it in.
+  imageElement.src = character.sprite;
+  if (REMOVE_WHITE_BACKGROUNDS) {
+    cleanPictureAndSwapIn(character.sprite, imageElement);
   }
 }
 
