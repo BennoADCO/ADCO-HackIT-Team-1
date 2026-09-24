@@ -1,0 +1,317 @@
+{
+  "character": "Party",
+  "availability": [
+    "A",
+    "N"
+  ],
+  "favourite_items": [
+    "Glow Sticks",
+    "Party Hat",
+    "Disco Ball"
+  ],
+  "secret_item": {
+    "name": "Black Nail Polish",
+    "also_liked_by": "Goth"
+  },
+  "contested_secret_items": [
+    {
+      "name": "Marshmallows",
+      "primary_character": "Lumberjack"
+    }
+  ],
+  "favour_values": {
+    "best": 2,
+    "neutral": 0,
+    "wrong": -1
+  },
+  "scenes": [
+    {
+      "id": "party_hospital_a",
+      "location": "Hospital",
+      "time": "A",
+      "dialogue": "Sprained my ankle dancing on a table. Worth it!",
+      "question": "Was it worth it?",
+      "responses": [
+        {
+          "text": "Totally, great story!",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Hope you're okay.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "Sounds irresponsible.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "party_hospital_n",
+      "location": "Hospital",
+      "time": "N",
+      "dialogue": "Visiting a friend who got hurt at a gig. Brought glow sticks!",
+      "question": "Would you sneak in balloons for me?",
+      "responses": [
+        {
+          "text": "Absolutely.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "If the nurses allow it.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "That's against the rules.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "party_uni_campus_a",
+      "location": "Uni Campus",
+      "time": "A",
+      "dialogue": "Handing out flyers for tonight's campus party!",
+      "question": "You coming?",
+      "responses": [
+        {
+          "text": "Wouldn't miss it.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Maybe.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "I have to study.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "party_uni_campus_n",
+      "location": "Uni Campus",
+      "time": "N",
+      "dialogue": "Someone brought a smoke machine to the party!",
+      "question": "Want to start a dance circle?",
+      "responses": [
+        {
+          "text": "Let's do it!",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "I'll watch.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "That's embarrassing.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "party_construction_site_a",
+      "location": "Construction Site",
+      "time": "A",
+      "dialogue": "My friend works here. Dropping off party invites!",
+      "question": "Should I invite the whole crew?",
+      "responses": [
+        {
+          "text": "The more the merrier!",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Just a few.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "Keep it small.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "party_bar_a",
+      "location": "Bar",
+      "time": "A",
+      "dialogue": "Happy hour! Best two hours of the day!",
+      "question": "What's your go-to drink?",
+      "responses": [
+        {
+          "text": "Whatever you're having!",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Something simple.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "Just water, I'm leaving early.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "party_bar_n",
+      "location": "Bar",
+      "time": "N",
+      "dialogue": "Karaoke night! I already signed us up.",
+      "question": "What are we singing?",
+      "responses": [
+        {
+          "text": "A big 80s anthem!",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Something slow.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "I'm not singing.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "party_club_n",
+      "location": "Club",
+      "time": "N",
+      "dialogue": "This DJ is insane! You're not just going to stand there, are you?",
+      "question": "Dance with me?",
+      "responses": [
+        {
+          "text": "Absolutely, let's go!",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "After one more song.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "I don't really dance.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "party_coffee_shop_a",
+      "location": "Coffee Shop",
+      "time": "A",
+      "dialogue": "Iced coffee, extra syrup. Fuelling up for tonight!",
+      "question": "What's your plan tonight?",
+      "responses": [
+        {
+          "text": "Wherever you're going!",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Dinner, then home.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "Staying in to read.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "party_gym_a",
+      "location": "Gym",
+      "time": "A",
+      "dialogue": "Working out so I can dance all night!",
+      "question": "Want to try my dance cardio class?",
+      "responses": [
+        {
+          "text": "Sure!",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Next time.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "Dancing isn't exercise.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "party_gym_n",
+      "location": "Gym",
+      "time": "N",
+      "dialogue": "Night gym, then straight to the club. Efficient!",
+      "question": "Coming with me after?",
+      "responses": [
+        {
+          "text": "Let's go!",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Just for an hour.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "I need sleep.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "party_shopping_centre_a",
+      "location": "Shopping Centre",
+      "time": "A",
+      "dialogue": "I need an outfit for tonight!",
+      "question": "Sparkly or neon?",
+      "responses": [
+        {
+          "text": "Both!",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Sparkly.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "Plain black.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    }
+  ]
+}
