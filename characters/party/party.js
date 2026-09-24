@@ -28,6 +28,44 @@ CHARACTERS['party'] = {
   "name": "Party Shaun",
   "sprite": "assets/people/party.png",
   "anchor": "centre",
+
+  // ------------------------------------------------------------
+  //  ANSWERING BACK
+  // ------------------------------------------------------------
+  //  What he says after you answer, so a scene does not stop dead
+  //  the moment you pick something.
+  //    good - your answer pleased him  (a reply with "like" above 0)
+  //    ok   - your answer was a shrug  ("like" of 0)
+  //    bad  - your answer missed him   ("like" below 0)
+  //
+  //  These have to work after ANY of his questions, so keep them
+  //  about how he took it rather than about the subject. For a line
+  //  written to fit one exact answer, put a "reply" on that answer
+  //  down in "nodes" instead - that always wins over these.
+  //
+  //  Party Shaun is loud and inviting. Everything is the best thing
+  //  that has ever happened.
+  "reactions": {
+    "good": [
+      "YES! See, this one gets it!",
+      "Mate! That is what I am talking about!",
+      "Okay okay okay. I like you.",
+      "Finally, someone with a bit of life in them!"
+    ],
+    "ok": [
+      "Ha! Alright, sitting on the fence.",
+      "Sure, sure. We will work on you.",
+      "That is a maybe. I will take a maybe.",
+      "Eh! Good enough!"
+    ],
+    "bad": [
+      "Oh, come ON.",
+      "Boo! Terrible. Awful. Nul points.",
+      "Wow. Okay. Wow.",
+      "You are killing me here. Killing me."
+    ]
+  },
+  "leaveText": "Escape while you can.",
   "favourite_items": [
     "Glow Sticks",
     "Party Hat",

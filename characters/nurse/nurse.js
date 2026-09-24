@@ -28,6 +28,43 @@ CHARACTERS['nurse'] = {
   "name": "Nurse Shaun",
   "sprite": "assets/people/nurse.png",
   "anchor": "right",
+
+  // ------------------------------------------------------------
+  //  ANSWERING BACK
+  // ------------------------------------------------------------
+  //  What he says after you answer, so a scene does not stop dead
+  //  the moment you pick something.
+  //    good - your answer pleased him  (a reply with "like" above 0)
+  //    ok   - your answer was a shrug  ("like" of 0)
+  //    bad  - your answer missed him   ("like" below 0)
+  //
+  //  These have to work after ANY of his questions, so keep them
+  //  about how he took it rather than about the subject. For a line
+  //  written to fit one exact answer, put a "reply" on that answer
+  //  down in "nodes" instead - that always wins over these.
+  //
+  //  Nurse Shaun is tired, competent and dry. Twelve hours in.
+  "reactions": {
+    "good": [
+      "Finally. Someone sensible.",
+      "Good. That is the right answer.",
+      "Hm. You are alright, you.",
+      "See, that is what I have been saying all week."
+    ],
+    "ok": [
+      "Mm. Fair.",
+      "That is a very diplomatic answer.",
+      "Sure. Whatever gets you through.",
+      "Right. Okay."
+    ],
+    "bad": [
+      "Oh, don't you start.",
+      "That is exactly what the last one said.",
+      "Wrong, but I have not got the energy.",
+      "Hm. No."
+    ]
+  },
+  "leaveText": "Let him get back to it.",
   "favourite_items": [
     "Stethoscope",
     "Coffee",

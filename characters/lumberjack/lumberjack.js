@@ -28,6 +28,43 @@ CHARACTERS['lumberjack'] = {
   "name": "Lumberjack Shaun",
   "sprite": "assets/people/lumberjack.png",
   "anchor": "left",
+
+  // ------------------------------------------------------------
+  //  ANSWERING BACK
+  // ------------------------------------------------------------
+  //  What he says after you answer, so a scene does not stop dead
+  //  the moment you pick something.
+  //    good - your answer pleased him  (a reply with "like" above 0)
+  //    ok   - your answer was a shrug  ("like" of 0)
+  //    bad  - your answer missed him   ("like" below 0)
+  //
+  //  These have to work after ANY of his questions, so keep them
+  //  about how he took it rather than about the subject. For a line
+  //  written to fit one exact answer, put a "reply" on that answer
+  //  down in "nodes" instead - that always wins over these.
+  //
+  //  Lumberjack Shaun is plain and warm. No edge to him at all.
+  "reactions": {
+    "good": [
+      "Ha! Good answer, that.",
+      "See, I knew I liked you.",
+      "That is the spirit.",
+      "Too right. Good on ya."
+    ],
+    "ok": [
+      "Fair enough.",
+      "Yeah, no, that is fair.",
+      "Can't argue with that.",
+      "Suppose so, yeah."
+    ],
+    "bad": [
+      "Huh. Each to their own.",
+      "Really? Not how I would have it.",
+      "Well. You are honest, I will give you that.",
+      "Ah well. Can't agree on everything."
+    ]
+  },
+  "leaveText": "Head off.",
   "favourite_items": [
     "Axe",
     "Flannel Shirt",

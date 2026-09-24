@@ -57,12 +57,23 @@
 <section id="map-screen" class="screen">
   <header class="map-header">
     <h1>Where to?</h1>
-    <p class="map-sub">Pick somewhere. See who turns up.</p>
+    <p class="map-sub">Click a pin. See who turns up.</p>
     <!-- Who is out depends on the hour, so the hour has to be visible. -->
     <p id="time-of-day" class="time-of-day"></p>
   </header>
 
-  <div id="map-grid" class="map-grid"></div>
+  <!-- THE TOWN MAP
+       The pins are already drawn onto the picture. The empty div on top
+       of it is where the game puts the clickable spots, one per place,
+       positioned by the mapX/mapY numbers in data/locations.js.
+       Both layers scale together, so the spots stay on their pins at
+       any window size. -->
+  <div class="map-board">
+    <div class="map-frame">
+      <img class="map-picture" src="assets/places/map.png" alt="A map of the town">
+      <div id="map-pins" class="map-pins"></div>
+    </div>
+  </div>
 
   <footer class="map-footer">
     <p id="save-hint"></p>

@@ -52,6 +52,43 @@ Drop a `dave.png` into `assets/people/`, named after their id. Tall, with a see-
 
 `"anchor"` decides which side of the screen they stand on: `"left"`, `"centre"` or `"right"`.
 
+### If they turn up in a white box
+
+That means the picture was drawn on a white background instead of a see-through one.
+
+The game tries to rub the white out by itself when the picture loads (`js/dating/pictures.js`). It works from the outside edges inwards, so white shirts and the whites of eyes are safely left alone. But most browsers refuse to let a page look at the dots of a picture when the game has been opened by double-clicking a file rather than off a web address — and when that happens there is nothing the game can do, so the white box stays.
+
+The fix that always works is to save the picture with a see-through background in the first place, using whatever drew it. Paint.NET, Photopea and Canva can all do it, and it only has to be done once per character.
+
+## Answering back
+
+When the player picks a reply, the character says something back before the conversation closes. Without this a scene stops dead the moment you answer.
+
+**The good way** — write a `"reply"` onto that exact answer. It can say something about what the player actually said:
+
+```js
+{ "text": "Yes, very.", "like": 2,
+  "reply": ["Most people fill it with noise the second it turns up.",
+            "You just let it sit there. I noticed."],
+  "end": true }
+```
+
+One line or a list of them, both work. See `goth_hospital_n` in `characters/goth/goth.js` for a scene where all three answers have one.
+
+**The quick way** — the `"reactions"` block near the top of each character file. Three sets of lines, used when an answer has no `"reply"` of its own:
+
+| | when it's used |
+|---|---|
+| `good` | your answer pleased them — `"like"` above 0 |
+| `ok` | your answer was a shrug — `"like"` of 0 |
+| `bad` | your answer missed them — `"like"` below 0 |
+
+These get used after *any* of that character's questions, so keep them about **how they took it**, not about the subject. "Ha! Good answer, that." works everywhere. "Yeah, I love darkwave too" only works in one scene.
+
+A `"reply"` on an answer always beats the general ones, so you can improve scenes one at a time and nothing breaks while you work.
+
+`"leaveText"` sets what the button underneath says — "Head off.", "Escape while you can." Set it once per character.
+
 ## Appearances — where and when you can meet them
 
 `"appearances"` is the list of places they turn up, and at what time of day.

@@ -92,65 +92,133 @@ html, body {
   text-transform: uppercase;
 }
 
-/* The location cards. They lay themselves out in as many columns as
-   fit, so this works on a laptop or a big meeting-room screen. */
-.map-grid {
+/* ----------------------------------------------------------------
+   THE TOWN MAP
+   ----------------------------------------------------------------
+   The picture and the clickable pins are two layers stacked on top of
+   each other. The frame is locked to the picture's own shape
+   (1534 by 624), so both layers always scale together and a pin never
+   drifts off its building.
+
+   IF YOU EVER REPLACE map.png with a differently-shaped picture, change
+   the aspect-ratio line below to match it, or every pin will be out. */
+
+.map-board {
   flex: 1 1 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 26px;
-  align-content: start;
-  padding: 4vh 6vw;
-  overflow-y: auto;
+  min-height: 0;                /* lets it shrink on a short window */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3vh 4vw;
 }
 
-.location-card {
+.map-frame {
   position: relative;
-  aspect-ratio: 16 / 9;
-  border: 1px solid var(--panel-edge);
+  width: 100%;
+  max-height: 100%;
+  aspect-ratio: 1534 / 624;     /* the shape of map.png */
   border-radius: var(--radius);
-  overflow: hidden;
-  cursor: pointer;
-  padding: 0;
-  background-color: #1a1720;
-  background-size: cover;
-  background-position: center;
-  text-align: left;
-  font: inherit;
-  color: var(--ink);
-  transition: transform .18s ease, border-color .18s ease;
-}
-.location-card:hover,
-.location-card:focus-visible {
-  transform: translateY(-4px);
-  border-color: var(--accent);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
 }
 
-/* A dark wash so the words stay readable over any picture. */
-.location-shade {
+.map-picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: var(--radius);
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* The layer the pins live on. It sits exactly over the picture. */
+.map-pins {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top,
-              rgba(0, 0, 0, 0.88) 0%,
-              rgba(0, 0, 0, 0.35) 45%,
-              rgba(0, 0, 0, 0.1) 100%);
 }
 
-.location-name {
+/* ----------------------------------------------------------------
+   ONE PIN
+   ----------------------------------------------------------------
+   The pins and the place names are already painted onto the picture.
+   This is only the ring you can click, centred on the drawn pin, plus
+   a tag underneath naming whoever is there. */
+
+.map-pin {
   position: absolute;
-  left: 22px;
-  bottom: 48px;
-  font-size: clamp(20px, 2vw, 28px);
+  /* left and top are set by the game, from the mapX/mapY numbers in
+     data/locations.js. This pulls the ring back by half its own size
+     so it sits centred on that spot rather than hanging off it. */
+  transform: translate(-50%, -50%);
+  width: clamp(34px, 3.4vw, 58px);
+  height: clamp(34px, 3.4vw, 58px);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+}
+
+.map-pin-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  transition: border-color .15s, box-shadow .15s, transform .15s;
+}
+
+.map-pin:hover .map-pin-ring,
+.map-pin:focus-visible .map-pin-ring {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 5px rgba(255, 200, 97, 0.25);
+  transform: scale(1.12);
+}
+
+/* A place with somebody in it. This is the one thing the player is
+   actually scanning the map for, so it gets the loud treatment. */
+.map-pin.has-people .map-pin-ring {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(255, 200, 97, 0.28),
+              0 0 22px rgba(255, 200, 97, 0.5);
+  animation: pin-pulse 2s ease-in-out infinite;
+}
+
+@keyframes pin-pulse {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(255, 200, 97, 0.28),
+                         0 0 22px rgba(255, 200, 97, 0.45); }
+  50%      { box-shadow: 0 0 0 9px rgba(255, 200, 97, 0.12),
+                         0 0 30px rgba(255, 200, 97, 0.7); }
+}
+
+/* Who is here, on a dark tag under the pin. */
+.map-pin-who {
+  position: absolute;
+  top: 104%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  background: rgba(12, 10, 16, 0.86);
+  border: 1px solid rgba(255, 200, 97, 0.45);
+  border-radius: 999px;
+  padding: 3px 11px;
+  font-size: clamp(11px, 1vw, 15px);
   font-weight: 600;
-}
-.location-who {
-  position: absolute;
-  left: 22px;
-  bottom: 22px;
-  font-size: 16px;
   color: var(--accent);
+  pointer-events: none;   /* never swallows a click meant for the pin */
 }
-.location-who.is-empty { color: var(--ink-dim); }
+
+/* On a phone-sized window the map gets too small to aim at, so let it
+   scroll sideways at a usable size instead of shrinking to nothing. */
+@media (max-width: 700px) {
+  .map-board {
+    overflow-x: auto;
+    justify-content: flex-start;
+  }
+  .map-frame {
+    width: 700px;
+    flex: 0 0 auto;
+  }
+}
 
 .map-footer {
   flex: 0 0 auto;
@@ -391,5 +459,4 @@ html, body {
 @media (max-width: 700px) {
   .dialogue { padding: 22px 22px 20px; bottom: 2vh; width: 94vw; }
   .sprite   { height: 58vh; bottom: 24vh; }
-  .map-grid { grid-template-columns: 1fr; padding: 3vh 5vw; }
 }

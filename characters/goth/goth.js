@@ -28,6 +28,43 @@ CHARACTERS['goth'] = {
   "name": "Goth Shaun",
   "sprite": "assets/people/goth.png",
   "anchor": "right",
+
+  // ------------------------------------------------------------
+  //  ANSWERING BACK
+  // ------------------------------------------------------------
+  //  What he says after you answer, so a scene does not stop dead
+  //  the moment you pick something.
+  //    good - your answer pleased him  (a reply with "like" above 0)
+  //    ok   - your answer was a shrug  ("like" of 0)
+  //    bad  - your answer missed him   ("like" below 0)
+  //
+  //  These have to work after ANY of his questions, so keep them
+  //  about how he took it rather than about the subject. For a line
+  //  written to fit one exact answer, put a "reply" on that answer
+  //  down in "nodes" instead - that always wins over these.
+  //
+  //  Goth Shaun is dry and withdrawn. He does not gush.
+  "reactions": {
+    "good": [
+      "Huh. You actually meant that.",
+      "Most people say the opposite. Noted.",
+      "That is not the answer I expected. Good.",
+      "Alright. You might not be hopeless."
+    ],
+    "ok": [
+      "Mm.",
+      "Fair enough, I suppose.",
+      "That is a very safe answer.",
+      "Noncommittal. Fine."
+    ],
+    "bad": [
+      "Right.",
+      "Of course you would say that.",
+      "...We are very different people.",
+      "Forget I asked."
+    ]
+  },
+  "leaveText": "Leave him to it.",
   "favourite_items": [
     "Black Rose",
     "Skull Ring",
@@ -71,6 +108,12 @@ CHARACTERS['goth'] = {
     }
   ],
   "nodes": {
+    // WORKED EXAMPLE. Every answer here has its own "reply" - what he
+    // says back to that exact answer. That is better than the general
+    // "reactions" at the top of this file, because it can talk about
+    // what you actually said. Copy this pattern into the other scenes
+    // as you get time. Any answer with no "reply" of its own falls
+    // back to the general ones, so nothing breaks while you work.
     "goth_hospital_n": {
       "says": [
         "Visiting my grandmother. Hospitals at night are strangely beautiful.",
@@ -80,16 +123,26 @@ CHARACTERS['goth'] = {
         {
           "text": "Yes, very.",
           "like": 2,
+          "reply": [
+            "Most people fill it with noise the second it turns up.",
+            "You just let it sit there. I noticed."
+          ],
           "end": true
         },
         {
           "text": "Sometimes.",
           "like": 0,
+          "reply": "Sometimes. The honest answer, at least.",
           "end": true
         },
         {
           "text": "No, it's creepy.",
           "like": -1,
+          "reply": [
+            "Creepy.",
+            "It is the only part of the day nobody wants anything from you.",
+            "But sure. Creepy."
+          ],
           "end": true
         }
       ]

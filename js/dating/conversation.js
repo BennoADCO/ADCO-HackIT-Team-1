@@ -27,6 +27,10 @@
 //    set: { x: true }   - writes a note into their memory
 //    needs: { x: true } - (replies only) hide this reply unless their
 //                         memory matches
+//    reply: 'Ha. Good.' - (replies only) what they say BACK to that
+//                         answer, before the conversation closes. May
+//                         be one line or a list of them. See ANSWERING
+//                         BACK further down this file.
 //    end: true          - the conversation finishes here
 //    advance: true      - move them on to their next chapter, which is
 //                         what makes them turn up somewhere new
@@ -37,8 +41,19 @@ var chat = {
   nodeId: '',        // which node we are on
   sceneNode: '',     // the scene we opened on, so it can be ticked off
   lineIndex: 0,      // which line of that node is on screen
-  finished: false    // true once the conversation has closed
+  finished: false,   // true once the conversation has closed
+  reaction: null     // what they said back to your answer (see ANSWERING BACK)
 };
+
+// What is on screen right now. Usually a node out of the character's
+// file, but while they are reacting to something you said it is the
+// little one-off node built in answeredWith() below.
+function currentNode() {
+  if (chat.reaction) {
+    return chat.reaction;
+  }
+  return CHARACTERS[chat.characterId].nodes[chat.nodeId];
+}
 
 
 function startConversation(characterId) {
@@ -55,6 +70,7 @@ function startConversation(characterId) {
   chat.characterId = characterId;
   chat.sceneNode = startNode;
   chat.finished = false;
+  chat.reaction = null;
 
   getCharacterState(characterId).met = true;
 
@@ -85,6 +101,7 @@ function goToNode(nodeId) {
 
   chat.nodeId = nodeId;
   chat.lineIndex = 0;
+  chat.reaction = null;   // back to their own words
 
   // A node can warm someone up or leave a note just by being reached.
   changeLike(chat.characterId, node.like);
@@ -94,7 +111,7 @@ function goToNode(nodeId) {
 }
 
 function showCurrentLine() {
-  var node = CHARACTERS[chat.characterId].nodes[chat.nodeId];
+  var node = currentNode();
   var lines = node.says || [''];
 
   els.line.textContent = lines[chat.lineIndex];
@@ -115,7 +132,7 @@ function nextLine() {
   if (chat.finished) {
     return;
   }
-  var node = CHARACTERS[chat.characterId].nodes[chat.nodeId];
+  var node = currentNode();
   var lines = node.says || [''];
   if (chat.lineIndex >= lines.length - 1) {
     return;
@@ -183,17 +200,126 @@ function chooseOption(option) {
   changeLike(chat.characterId, option.like);
   setFlags(chat.characterId, option.set);
 
-  if (option.end === true) {
-    endConversation(option.advance === true);
-    return;
-  }
+  // If this reply goes on to another node, go there - that node IS the
+  // answer back, so there is nothing to add.
   if (option.goto) {
     goToNode(option.goto);
+    return;
+  }
+
+  // Otherwise the chat is about to finish. Let them say something back
+  // first, so it does not slam shut the moment you answer.
+  var answer = reactionTo(option);
+  if (answer) {
+    answeredWith(answer, option);
+    return;
+  }
+
+  if (option.end === true) {
+    endConversation(option.advance === true);
     return;
   }
   // Neither "goto" nor "end": the checker warns about this, but if it
   // slips through, close the chat rather than leaving a dead button.
   endConversation(false);
+}
+
+
+// ----------------------------------------------------------------
+//  ANSWERING BACK
+// ----------------------------------------------------------------
+//  Picking a reply used to end the conversation on the spot, which
+//  made every scene stop dead. Now they say something back first.
+//
+//  There are two ways they can do that, and the first one wins:
+//
+//  1. A "reply" written on that exact answer, in the character's file:
+//
+//       { "text": "Yes, very.", "like": 2,
+//         "reply": ["Good. Most people fill it with noise."],
+//         "end": true }
+//
+//     This is the good stuff - written for that one answer. Add them
+//     to the answers you care about most.
+//
+//  2. If there is no "reply", one of the character's general
+//     reactions is used instead, picked on whether your answer
+//     pleased them, left them cold, or missed them completely. That
+//     is the "reactions" block near the top of their file.
+//
+//  The general one is chosen by the name of the scene rather than at
+//  random, so the same scene always gets the same reaction. It stays
+//  put instead of changing every time you replay it.
+
+// Which of the three sorts of reaction an answer earns. It goes off
+// "like": above zero pleased them, zero was a shrug, below zero missed.
+function reactionBand(option) {
+  var like = option.like;
+  if (typeof like !== 'number' || like === 0) {
+    return 'ok';
+  }
+  if (like > 0) {
+    return 'good';
+  }
+  return 'bad';
+}
+
+// The lines they say back, or null if there are none to say.
+function reactionTo(option) {
+  // 1. Written for this exact answer.
+  if (option.reply) {
+    return linesOf(option.reply);
+  }
+
+  // 2. One of their general ones.
+  var character = CHARACTERS[chat.characterId];
+  if (!character.reactions) {
+    return null;
+  }
+  var pool = character.reactions[reactionBand(option)];
+  if (!pool || pool.length === 0) {
+    return null;
+  }
+  return linesOf(pool[steadyPick(chat.nodeId, pool.length)]);
+}
+
+// Lets a reply be written as one line or as a list of them, so nobody
+// has to remember which. Always gives back a list.
+function linesOf(reply) {
+  if (typeof reply === 'string') {
+    return [reply];
+  }
+  return reply;
+}
+
+// Turns a name into a number between 0 and howMany-1, the same way
+// every time. Used so a scene always gets the same general reaction
+// rather than a different one on every replay.
+function steadyPick(name, howMany) {
+  var total = 0;
+  var text = String(name || '');
+  for (var i = 0; i < text.length; i++) {
+    total = total + text.charCodeAt(i);
+  }
+  return total % howMany;
+}
+
+// Put their answer on screen. It is built as a one-off node with no
+// replies of its own, so the usual "Leave" button turns up underneath
+// it and the conversation closes when the player is ready - not the
+// instant they clicked.
+function answeredWith(lines, option) {
+  var character = CHARACTERS[chat.characterId];
+
+  chat.reaction = {
+    says: lines,
+    end: true,
+    advance: option.advance === true,
+    leaveText: option.leaveText || character.leaveText || 'Leave'
+  };
+  chat.lineIndex = 0;
+
+  showCurrentLine();
 }
 
 
