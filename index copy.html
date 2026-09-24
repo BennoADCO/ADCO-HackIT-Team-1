@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<!--
+  ================================================================
+   WIPE OUT
+  ================================================================
+   Double-click this file to play. No installs, no internet needed.
+
+   This page only holds the game window (called the "canvas") and
+   loads the four script files, in this order:
+     1. js/config.js  - every setting: numbers, words and colours
+     2. js/engine.js  - the machinery: game loop, keyboard, helpers
+     3. js/sprites.js - the pixel-art pictures, typed out as letters
+     4. js/game.js    - the rules of the game
+   The order matters: each file uses things from the files above it.
+  ================================================================
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Wipe Out</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- The game window. The game always draws at 900 x 600;
+       css/style.css stretches it to fit your screen. -->
+  <canvas id="game" width="900" height="600"></canvas>
+
+  <!-- SAFETY NET: if anything goes wrong, paint a message on the game
+       window saying how to report it, instead of leaving a blank screen.
+       The colours are typed in here on purpose, so this still works even
+       when the settings file itself is the thing that broke. -->
+  <script>
+    window.addEventListener('error', function (event) {
+      var canvas = document.getElementById('game');
+      if (!canvas) {
+        return;
+      }
+      var c = canvas.getContext('2d');
+      var where = '';
+      if (event.filename) {
+        where = event.filename.split('/').pop() + ', line ' + event.lineno;
+      }
+      c.save();
+      c.setTransform(1, 0, 0, 1, 0, 0);
+      c.globalAlpha = 1;
+      c.fillStyle = 'rgba(110, 0, 0, 0.94)';
+      c.fillRect(90, 170, 720, 260);
+      c.fillStyle = '#ffffff';
+      c.textAlign = 'center';
+      c.textBaseline = 'middle';
+      c.font = 'bold 30px Arial, sans-serif';
+      c.fillText('Oops - something broke.', 450, 220);
+      c.font = '21px Arial, sans-serif';
+      c.fillText('Press F12, click Console, copy the red line,', 450, 272);
+      c.fillText('and paste it to Claude.', 450, 302);
+      c.font = '16px Consolas, monospace';
+      c.fillText(String(event.message || '').slice(0, 85), 450, 354);
+      c.fillText(where, 450, 380);
+      c.restore();
+    });
+  </script>
+
+  <!-- The game's own files, in load order: config, engine, sprites, game. -->
+  <script src="js/config.js"></script>
+  <script src="js/engine.js"></script>
+  <!-- The pixel-art pictures. If this file has a typo, the game still
+       plays, just with the plain emoji instead. -->
+  <script src="js/sprites.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>

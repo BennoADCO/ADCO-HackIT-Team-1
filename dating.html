@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<!--
+  ================================================================
+   WIPE OUT - the part after the crane
+  ================================================================
+   Double-click this file to play. No installs, no internet needed.
+
+   Unlike the opening game, this half is built out of ordinary web
+   page elements rather than being painted onto a canvas. That is why
+   the words stay sharp at any size, and why it fills whatever screen
+   it is opened on.
+
+   The script order at the bottom of this file matters:
+     1. registry.js   - makes the empty shelves
+     2. state.js      - how far you have got with everyone
+     3. locations.js  - the places, onto the shelf
+     4. each character - the people, onto the shelf
+     5. validate.js   - the typo checker
+     6. screens.js    - the map and the scene
+     7. conversation.js - running a chat
+     8. main.js       - starts everything. Must be LAST.
+
+   ADDING A CHARACTER? Add a <script> line for them below, next to
+   Mia's, or the game will never know they exist.
+  ================================================================
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wipe Out</title>
+  <link rel="stylesheet" href="css/dating.css">
+</head>
+<body>
+
+<!-- SAFETY NET: if anything goes wrong, say so on screen with
+     instructions, instead of leaving a blank page. -->
+<script>
+  window.addEventListener('error', function (event) {
+    var box = document.createElement('div');
+    box.setAttribute('style',
+      'position:fixed;inset:0;z-index:9999;background:#6e0000;color:#fff;' +
+      'font:16px Arial,sans-serif;padding:60px;line-height:1.6');
+    var where = event.filename ? event.filename.split('/').pop() + ', line ' + event.lineno : '';
+    box.innerHTML =
+      '<h1 style="font-size:30px;margin:0 0 20px">Oops - something broke.</h1>' +
+      '<p>Press F12, click Console, copy the red line, and paste it to Claude.</p>' +
+      '<p style="font-family:Consolas,monospace;opacity:.85">' +
+      String(event.message || '').slice(0, 160) + '<br>' + where + '</p>';
+    if (document.body) { document.body.appendChild(box); }
+  });
+</script>
+
+
+<!-- ============ THE MAP ============ -->
+<section id="map-screen" class="screen">
+  <header class="map-header">
+    <h1>Where to?</h1>
+    <p class="map-sub">Pick somewhere. See who turns up.</p>
+  </header>
+
+  <div id="map-grid" class="map-grid"></div>
+
+  <footer class="map-footer">
+    <p id="save-hint"></p>
+    <button id="wipe-button" class="plain-button">Start again</button>
+  </footer>
+</section>
+
+
+<!-- ============ WHO IS HERE ============ -->
+<!-- Shown when a place has nobody in it, or more than one person. -->
+<section id="people-screen" class="screen" hidden>
+  <div class="people-panel">
+    <h2 id="people-title"></h2>
+    <div id="people-list" class="people-list"></div>
+  </div>
+</section>
+
+
+<!-- ============ A SCENE ============ -->
+<section id="scene-screen" class="screen" hidden>
+  <div id="scene-bg" class="scene-bg"></div>
+  <img id="scene-sprite" class="sprite anchor-right" alt="">
+
+  <div id="dialogue" class="dialogue">
+    <p id="speaker" class="speaker"></p>
+    <p id="line" class="line"></p>
+    <div id="replies" class="replies"></div>
+    <span id="continue-prompt" class="continue-prompt" hidden>click, or press Space</span>
+  </div>
+</section>
+
+
+<!-- ============ PROBLEMS IN THE CHARACTER FILES ============ -->
+<aside id="problems" class="problems" hidden></aside>
+
+
+<!-- The game's files, in load order. -->
+<script src="js/dating/registry.js"></script>
+<script src="js/dating/state.js"></script>
+
+<!-- The places -->
+<script src="data/locations.js"></script>
+
+<!-- The people. One line per character. -->
+<script src="characters/mia/mia.js"></script>
+
+<!-- The machinery. main.js must stay last. -->
+<script src="js/dating/validate.js"></script>
+<script src="js/dating/screens.js"></script>
+<script src="js/dating/conversation.js"></script>
+<script src="js/dating/main.js"></script>
+
+</body>
+</html>
