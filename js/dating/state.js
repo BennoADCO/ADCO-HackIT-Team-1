@@ -5,18 +5,27 @@
 //  between visits. It looks like this:
 //
 //    PROGRESS = {
+//      time: 2,
 //      characters: {
-//        mia: { stage: 1, like: 3, flags: { mentionedCrane: true }, met: true }
+//        mia: { stage: 1, like: 3, flags: { mentionedCrane: true }, met: true },
+//        goth: { stage: 0, like: 4, done: { goth_bar_n: true }, met: true }
 //      }
 //    }
 //
 //  What each bit means:
+//    time  - what time of day it is: 0 morning, 1 daytime, 2 evening,
+//            3 night. It decides who is out and about. Moves on by one
+//            after every conversation, and wraps round to morning.
 //    stage - which chapter of that character's story you are on. It
 //            decides where they are and what they say. Starts at 0.
+//            Only used by story characters like Mia.
 //    like  - how warm they are towards you. Goes up and down with the
 //            replies you pick.
 //    flags - little true/false notes, so a character can remember
 //            something you said ages ago.
+//    done  - which of their scenes you have already played, so you do
+//            not get the same conversation twice. Only used by the
+//            Shauns, who have a scene per place per time of day.
 //    met   - true once you have spoken to them at least once.
 //
 //  SAVING
@@ -32,7 +41,7 @@
 
 var SAVE_KEY = 'wipeout-dating-save';
 
-var PROGRESS = { characters: {} };
+var PROGRESS = { time: 0, characters: {} };
 var saveWorks = true;   // set to false if this browser blocks saving
 
 
@@ -42,6 +51,7 @@ function blankCharacterState() {
     stage: 0,
     like: 0,
     flags: {},
+    done: {},
     met: false
   };
 }
@@ -58,6 +68,55 @@ function getCharacterState(characterId) {
 
 // ----------------------------------------------------------------
 //  Changing the state
+// ----------------------------------------------------------------
+
+// ----------------------------------------------------------------
+//  The time of day
+// ----------------------------------------------------------------
+//  Four slots, going round and round: morning, daytime, evening,
+//  night, then morning again. Who you can meet depends on it.
+
+// What time it is now, as a number from 0 to 3.
+function currentTimeIndex() {
+  var time = PROGRESS.time;
+  if (typeof time !== 'number' || time < 0 || time >= TIME_SLOTS.length) {
+    return 0;
+  }
+  return time;
+}
+
+// What time it is now, as the letter the character files use:
+// 'M' morning, 'D' daytime, 'A' evening, 'N' night.
+function currentTimeCode() {
+  return TIME_SLOTS[currentTimeIndex()].code;
+}
+
+// Move the clock on one slot. After night it comes back round to
+// morning, so you can never run out of time to meet someone.
+function advanceTime() {
+  PROGRESS.time = (currentTimeIndex() + 1) % TIME_SLOTS.length;
+  saveProgress();
+}
+
+
+// ----------------------------------------------------------------
+//  Scenes you have already played
+// ----------------------------------------------------------------
+
+// Have we already had this exact conversation with this person?
+function sceneIsDone(characterId, nodeId) {
+  var done = getCharacterState(characterId).done;
+  return done[nodeId] === true;
+}
+
+// Remember that we have, so they say something new next time.
+function markSceneDone(characterId, nodeId) {
+  getCharacterState(characterId).done[nodeId] = true;
+}
+
+
+// ----------------------------------------------------------------
+//  Changing a character
 // ----------------------------------------------------------------
 
 // Move a character on to the next chapter of their story.
@@ -151,6 +210,12 @@ function loadProgress() {
 // anything odd back into range, so a stale save can never wedge the
 // game on a chapter that no longer exists.
 function tidyProgress() {
+  // A save made before the clock existed has no time in it at all.
+  if (typeof PROGRESS.time !== 'number' ||
+      PROGRESS.time < 0 || PROGRESS.time >= TIME_SLOTS.length) {
+    PROGRESS.time = 0;
+  }
+
   for (var id in PROGRESS.characters) {
     var state = PROGRESS.characters[id];
 
@@ -163,6 +228,9 @@ function tidyProgress() {
     if (!state.flags || typeof state.flags !== 'object') {
       state.flags = {};
     }
+    if (!state.done || typeof state.done !== 'object') {
+      state.done = {};
+    }
 
     // Never point past the end of a character's story.
     var character = CHARACTERS[id];
@@ -174,7 +242,7 @@ function tidyProgress() {
 
 // Forget everything, for handing the laptop to someone new.
 function wipeProgress() {
-  PROGRESS = { characters: {} };
+  PROGRESS = { time: 0, characters: {} };
   try {
     localStorage.removeItem(SAVE_KEY);
   } catch (e) {

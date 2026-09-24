@@ -245,7 +245,10 @@ var CONFIG = {
     outOfTp: 'OUT OF TP!',
     loseHeading: 'OVERWHELMED',
     caughtLabel: 'Aliens caught: ',
-    playAgain: 'Press Space to try again'
+    playAgain: 'Press Space to try again',
+    // Only shown if the browser refuses to open the second half of the
+    // game by itself, which some locked-down ones do.
+    cannotOpenNextPage: 'Open dating.html to carry on.'
   },
 
   // ==============================================================
@@ -361,7 +364,7 @@ var CONFIG = {
   //  instruction. While the tutorial is running, NO aliens turn up on
   //  their own - the only ones that appear are the ones asked for here.
   //
-  //  The four kinds of instruction:
+  //  The five kinds of instruction:
   //
   //    { talk: ['line one', 'line two'] }
   //        Show a message in the talking box. The game waits until the
@@ -384,6 +387,16 @@ var CONFIG = {
   //          'moved'     - the player has pressed an arrow key
   //          'gotTP'     - the player has picked up the last dropped roll
   //          'noAliens'  - every alien on the site has been dealt with
+  //
+  //    { goToPage: 'dating.html', after: 1.2 }
+  //        Leave this page and open another one. This is how the crane
+  //        scene hands over to the second half of the game.
+  //          goToPage - the file to open. It must sit in the same
+  //                     folder as index.html.
+  //          after    - seconds to wait before it does. Leave it out
+  //                     and it waits one second.
+  //        Nothing after this instruction ever runs, because by then
+  //        the other page has taken over.
   //
   //  When the list runs out, the tutorial is over and the game starts
   //  spawning aliens on its own.
@@ -442,9 +455,13 @@ var CONFIG = {
     { talk: ['So that is it, then.',
              'Forty-one years, and a crane gets me.'] },
     { talk: ['Hang on. Why is it so warm?',
-             'And who is that?'] }
+             'And who is that?'] },
 
     // -------- THE DATING SIM PICKS UP FROM HERE --------
+    // The screen is already black at this point, so opening the other
+    // page looks like one continuous scene rather than a jump.
+    // Rename dating.html and you must change the name here too.
+    { goToPage: 'dating.html', after: 1.2 }
   ],
 
   // ==============================================================

@@ -57,12 +57,15 @@
   <header class="map-header">
     <h1>Where to?</h1>
     <p class="map-sub">Pick somewhere. See who turns up.</p>
+    <!-- Who is out depends on the hour, so the hour has to be visible. -->
+    <p id="time-of-day" class="time-of-day"></p>
   </header>
 
   <div id="map-grid" class="map-grid"></div>
 
   <footer class="map-footer">
     <p id="save-hint"></p>
+    <button id="wait-button" class="plain-button"></button>
     <button id="wipe-button" class="plain-button">Start again</button>
   </footer>
 </section>
@@ -104,7 +107,10 @@
 <script src="data/locations.js"></script>
 
 <!-- The people. One line per character. -->
-<script src="characters/mia/mia.js"></script>
+<script src="characters/goth/goth.js"></script>
+<script src="characters/lumberjack/lumberjack.js"></script>
+<script src="characters/nurse/nurse.js"></script>
+<script src="characters/party/party.js"></script>
 
 <!-- The machinery. main.js must stay last. -->
 <script src="js/dating/validate.js"></script>

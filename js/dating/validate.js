@@ -41,14 +41,28 @@ function checkOneCharacter(id, problems) {
   if (!character.name) {
     problems.push(who + ': no "name", so nobody knows what to call them.');
   }
-  if (!character.stages || character.stages.length === 0) {
-    problems.push(who + ': no "stages", so they will never appear anywhere.');
-    return;
-  }
 
   var nodes = character.nodes || {};
 
-  // Every stage must point at a real place and a real conversation.
+  // There are two sorts of character file, and they are checked
+  // differently. A Shaun has "appearances"; Mia has "stages".
+  if (isSceneCharacter(id)) {
+    checkAppearances(who, character, nodes, problems);
+  } else if (!character.stages || character.stages.length === 0) {
+    problems.push(who + ': no "stages" and no "appearances", so they will never appear anywhere.');
+    return;
+  } else {
+    checkStages(who, character, nodes, problems);
+  }
+
+  // Every conversation node must make sense.
+  for (var nodeId in nodes) {
+    checkOneNode(who, nodeId, nodes[nodeId], nodes, problems);
+  }
+}
+
+// STORY characters: a list of chapters, one place each.
+function checkStages(who, character, nodes, problems) {
   for (var s = 0; s < character.stages.length; s++) {
     var stage = character.stages[s];
     var label = who + ', stage ' + s;
@@ -65,10 +79,44 @@ function checkOneCharacter(id, problems) {
       problems.push(label + ': "start" points at "' + stage.start + '", which is not in their "nodes".');
     }
   }
+}
 
-  // Every conversation node must make sense.
-  for (var nodeId in nodes) {
-    checkOneNode(who, nodeId, nodes[nodeId], nodes, problems);
+// SCENE characters: a place and a time of day per scene.
+function checkAppearances(who, character, nodes, problems) {
+  var seen = {};
+
+  for (var a = 0; a < character.appearances.length; a++) {
+    var appearance = character.appearances[a];
+    var label = who + ', appearance ' + a;
+
+    if (!appearance.at) {
+      problems.push(label + ': no "at", so they are nowhere.');
+    } else if (!LOCATIONS[appearance.at]) {
+      problems.push(label + ': "at" is set to "' + appearance.at + '", which is not a location in data/locations.js.');
+    }
+
+    if (!appearance.time) {
+      problems.push(label + ': no "time", so they are never out.');
+    } else if (timeName(appearance.time) === appearance.time) {
+      // timeName gives the code straight back when it does not know it.
+      problems.push(label + ': "time" is "' + appearance.time +
+                    '", which is not one of M, D, A or N.');
+    }
+
+    if (!appearance.node) {
+      problems.push(label + ': no "node", so there is nothing for them to say.');
+    } else if (!nodes[appearance.node]) {
+      problems.push(label + ': "node" points at "' + appearance.node + '", which is not in their "nodes".');
+    }
+
+    // Two scenes in the same place at the same hour means the second
+    // one can never come up - the first always wins.
+    var slot = appearance.at + ' in the ' + timeName(appearance.time);
+    if (seen[slot]) {
+      problems.push(label + ': they are already at ' + slot +
+                    ' in an earlier appearance, so this one never comes up.');
+    }
+    seen[slot] = true;
   }
 }
 
@@ -122,13 +170,23 @@ function findStrandedNodes(characterId) {
     return [];
   }
 
-  // Start from every stage's opening node and follow every reply.
+  // Start from every node the game can open on - a chapter's "start"
+  // for a story character, or a scene for a Shaun - and follow every
+  // reply out from there.
   var reached = {};
   var toVisit = [];
+
   var stages = character.stages || [];
   for (var s = 0; s < stages.length; s++) {
     if (stages[s].start) {
       toVisit.push(stages[s].start);
+    }
+  }
+
+  var appearances = character.appearances || [];
+  for (var a = 0; a < appearances.length; a++) {
+    if (appearances[a].node) {
+      toVisit.push(appearances[a].node);
     }
   }
 
