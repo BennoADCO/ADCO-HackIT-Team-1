@@ -82,65 +82,98 @@ html, body {
   font-size: clamp(15px, 1.4vw, 20px);
 }
 
-/* The location cards. They lay themselves out in as many columns as
-   fit, so this works on a laptop or a big meeting-room screen. */
-.map-grid {
-  flex: 1 1 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 26px;
-  align-content: start;
-  padding: 4vh 6vw;
-  overflow-y: auto;
-}
-
-.location-card {
+/* The town map picture, with clickable pins floating on top of it.
+   The picture keeps its own shape (aspect-ratio) at any window size,
+   so a pin's x/y percentage (set in data/locations.js) always lands
+   on the same spot on the picture. */
+.map-stage {
   position: relative;
-  aspect-ratio: 16 / 9;
-  border: 1px solid var(--panel-edge);
+  flex: 1 1 auto;
+  width: min(94vw, 1400px);
+  max-height: 100%;
+  margin: 1vh auto 4vh;
+  aspect-ratio: 1534 / 624;
+}
+.map-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
   border-radius: var(--radius);
-  overflow: hidden;
-  cursor: pointer;
-  padding: 0;
-  background-color: #1a1720;
-  background-size: cover;
-  background-position: center;
-  text-align: left;
-  font: inherit;
-  color: var(--ink);
-  transition: transform .18s ease, border-color .18s ease;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
 }
-.location-card:hover,
-.location-card:focus-visible {
-  transform: translateY(-4px);
-  border-color: var(--accent);
-}
-
-/* A dark wash so the words stay readable over any picture. */
-.location-shade {
+.map-pins {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top,
-              rgba(0, 0, 0, 0.88) 0%,
-              rgba(0, 0, 0, 0.35) 45%,
-              rgba(0, 0, 0, 0.1) 100%);
 }
 
-.location-name {
+/* One glowing dot sitting over a place's pin in the picture. Invisible
+   until the mouse finds it, then it lights up and its name pops up. */
+.location-pin {
   position: absolute;
-  left: 22px;
-  bottom: 48px;
-  font-size: clamp(20px, 2vw, 28px);
+  width: clamp(44px, 5.4vw, 86px);
+  height: clamp(44px, 5.4vw, 86px);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: rgba(10, 8, 14, 0.18);
+  padding: 0;
+  cursor: pointer;
+  transition: transform .18s ease, border-color .18s ease,
+              background .18s ease, box-shadow .18s ease;
+}
+.location-pin:hover,
+.location-pin:focus-visible {
+  transform: translate(-50%, -50%) scale(1.15);
+  border-color: var(--accent);
+  background: rgba(255, 200, 97, 0.16);
+  box-shadow: 0 0 0 6px rgba(255, 200, 97, 0.18),
+              0 0 26px 6px rgba(255, 200, 97, 0.55);
+}
+
+/* The name + who's-there card that pops up above a pin on hover. */
+.pin-tip {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 12px);
+  transform: translateX(-50%) translateY(-6px);
+  min-width: 150px;
+  padding: 8px 16px;
+  background: var(--panel);
+  border: 1px solid var(--panel-edge);
+  border-radius: 10px;
+  text-align: center;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .15s ease, transform .15s ease;
+}
+.pin-tip::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-bottom-color: var(--panel-edge);
+}
+.location-pin:hover .pin-tip,
+.location-pin:focus-visible .pin-tip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.pin-name {
+  display: block;
+  font-size: 16px;
   font-weight: 600;
 }
-.location-who {
-  position: absolute;
-  left: 22px;
-  bottom: 22px;
-  font-size: 16px;
+.pin-who {
+  display: block;
+  margin-top: 3px;
+  font-size: 13px;
   color: var(--accent);
 }
-.location-who.is-empty { color: var(--ink-dim); }
+.pin-who.is-empty { color: var(--ink-dim); }
 
 .map-footer {
   flex: 0 0 auto;
@@ -377,5 +410,5 @@ html, body {
 @media (max-width: 700px) {
   .dialogue { padding: 22px 22px 20px; bottom: 2vh; width: 94vw; }
   .sprite   { height: 58vh; bottom: 24vh; }
-  .map-grid { grid-template-columns: 1fr; padding: 3vh 5vw; }
+  .map-stage { width: 96vw; margin: 1vh auto 3vh; }
 }

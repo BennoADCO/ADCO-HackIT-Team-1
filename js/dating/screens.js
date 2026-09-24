@@ -20,7 +20,7 @@ var currentLocation = '';  // where the player is standing right now
 // not hunting for them over and over.
 function grabElements() {
   els.map = document.getElementById('map-screen');
-  els.mapGrid = document.getElementById('map-grid');
+  els.mapPins = document.getElementById('map-pins');
   els.people = document.getElementById('people-screen');
   els.peopleTitle = document.getElementById('people-title');
   els.peopleList = document.getElementById('people-list');
@@ -60,11 +60,11 @@ function showMap() {
 }
 
 function renderMap() {
-  emptyOut(els.mapGrid);
+  emptyOut(els.mapPins);
   var ids = allLocationIds();
 
   for (var i = 0; i < ids.length; i++) {
-    els.mapGrid.appendChild(buildLocationCard(ids[i]));
+    els.mapPins.appendChild(buildLocationPin(ids[i]));
   }
 
   // A line at the bottom saying whether progress is being kept.
@@ -75,29 +75,33 @@ function renderMap() {
   }
 }
 
-function buildLocationCard(locationId) {
+// One glowing dot sat on top of a place's pin in the map picture, at
+// the x/y percentage set for it in data/locations.js. Hovering (or,
+// on a touchscreen, tapping once) lights it up and shows its name.
+function buildLocationPin(locationId) {
   var place = LOCATIONS[locationId];
   var people = charactersAt(locationId);
 
-  var card = document.createElement('button');
-  card.className = 'location-card';
-  card.style.backgroundImage = 'url("' + place.background + '")';
-  card.onclick = function () {
+  var pin = document.createElement('button');
+  pin.className = 'location-pin';
+  pin.style.left = place.x + '%';
+  pin.style.top = place.y + '%';
+  pin.setAttribute('aria-label', place.name);
+  pin.onclick = function () {
     enterLocation(locationId);
   };
 
-  var shade = document.createElement('span');
-  shade.className = 'location-shade';
-  card.appendChild(shade);
+  var tip = document.createElement('span');
+  tip.className = 'pin-tip';
 
   var name = document.createElement('span');
-  name.className = 'location-name';
+  name.className = 'pin-name';
   name.textContent = place.name;
-  card.appendChild(name);
+  tip.appendChild(name);
 
   // Who is here, so the player has a reason to pick one place over another.
   var who = document.createElement('span');
-  who.className = 'location-who';
+  who.className = 'pin-who';
   if (people.length === 0) {
     who.textContent = 'Nobody about';
     who.className = who.className + ' is-empty';
@@ -108,9 +112,10 @@ function buildLocationCard(locationId) {
     }
     who.textContent = names.join(', ');
   }
-  card.appendChild(who);
+  tip.appendChild(who);
 
-  return card;
+  pin.appendChild(tip);
+  return pin;
 }
 
 
