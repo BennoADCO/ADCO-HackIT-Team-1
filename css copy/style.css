@@ -1,0 +1,41 @@
+/* ================================================================
+   WIPE OUT - PAGE STYLE
+   ================================================================
+   This file only styles the web page AROUND the game: the dark
+   background, and how big the game window is on your screen.
+   The game itself is drawn by the files in the js folder.
+   ================================================================ */
+
+/* The whole page: dark, no gaps at the edges, no scroll bars. */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #14110f;
+}
+
+/* Put the game window in the middle of the screen. */
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* The game window.
+   The game always draws at 900 x 600 (a 3:2 shape). These lines
+   stretch it as big as the browser window allows while keeping
+   that shape, so nothing gets squashed. */
+#game {
+  display: block;
+  /* Fallback size for very old browsers that don't understand min(). */
+  width: 900px;
+  height: 600px;
+  /* 98% of the window, whichever of width or height runs out first. */
+  width: min(98vw, 147vh);
+  height: min(65.333vw, 98vh);
+  background: #000000;
+  border-radius: 6px;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+}

@@ -1,0 +1,607 @@
+{
+  "character": "Nurse",
+  "availability": [
+    "M",
+    "D",
+    "A",
+    "N"
+  ],
+  "favourite_items": [
+    "Stethoscope",
+    "Coffee",
+    "Scrubs"
+  ],
+  "secret_item": {
+    "name": "Band-Aids",
+    "also_liked_by": "Lumberjack"
+  },
+  "contested_secret_items": [
+    {
+      "name": "Candles",
+      "primary_character": "Goth"
+    }
+  ],
+  "favour_values": {
+    "best": 2,
+    "neutral": 0,
+    "wrong": -1
+  },
+  "scenes": [
+    {
+      "id": "nurse_hospital_m",
+      "location": "Hospital",
+      "time": "M",
+      "dialogue": "Morning handover is chaos. Please tell me you're not a patient.",
+      "question": "Are you a morning person?",
+      "responses": [
+        {
+          "text": "Only after coffee.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Yes, I love mornings.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "No, I sleep till noon.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "nurse_hospital_d",
+      "location": "Hospital",
+      "time": "D",
+      "dialogue": "Lunch break, finally. Ten whole minutes.",
+      "question": "What do you usually eat for lunch?",
+      "responses": [
+        {
+          "text": "Something quick and healthy.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Takeaway.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "I skip lunch most days.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "nurse_hospital_a",
+      "location": "Hospital",
+      "time": "A",
+      "dialogue": "A kid just gave me a drawing for fixing his arm. Best part of the job.",
+      "question": "What makes a job worth it for you?",
+      "responses": [
+        {
+          "text": "Helping people.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "The pay.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "Finishing early.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "nurse_hospital_n",
+      "location": "Hospital",
+      "time": "N",
+      "dialogue": "Third night shift this week. Running on vending machine snacks.",
+      "question": "If you had a whole day off, what would you do?",
+      "responses": [
+        {
+          "text": "Sleep in and do nothing.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Work on my projects.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "Party all night!",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "nurse_uni_campus_m",
+      "location": "Uni Campus",
+      "time": "M",
+      "dialogue": "I'm giving a guest lecture to the nursing students.",
+      "question": "Ever thought about studying medicine?",
+      "responses": [
+        {
+          "text": "Yes, I admire what you do.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Maybe, but blood makes me queasy.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "No, sounds boring.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "nurse_uni_campus_d",
+      "location": "Uni Campus",
+      "time": "D",
+      "dialogue": "I've seen healthier food in the ER than this cafeteria.",
+      "question": "Do you cook for yourself?",
+      "responses": [
+        {
+          "text": "Yes, proper meals.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Sometimes.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "Instant noodles every night.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "nurse_uni_campus_a",
+      "location": "Uni Campus",
+      "time": "A",
+      "dialogue": "Studying for a certification exam. My brain is mush.",
+      "question": "How do you deal with stress?",
+      "responses": [
+        {
+          "text": "Take breaks and rest.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Just push through.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "Stay up all night.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "nurse_uni_campus_n",
+      "location": "Uni Campus",
+      "time": "N",
+      "dialogue": "The library is the only quiet place I can study.",
+      "question": "Would you quiz me on my flashcards?",
+      "responses": [
+        {
+          "text": "Of course, hand them over.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "For a few minutes.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "Nah, I've got better things to do.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "nurse_construction_site_m",
+      "location": "Construction Site",
+      "time": "M",
+      "dialogue": "Site safety check. Someone forgot their hard hat again.",
+      "question": "Do you take safety seriously?",
+      "responses": [
+        {
+          "text": "Always.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Most of the time.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "Rules are made to be broken.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "nurse_construction_site_d",
+      "location": "Construction Site",
+      "time": "D",
+      "dialogue": "A worker cut his hand on sheet metal. Patched him right up.",
+      "question": "Could you handle seeing an injury?",
+      "responses": [
+        {
+          "text": "Yes, I'd stay calm and help.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "I'd try.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "I'd faint.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "nurse_construction_site_a",
+      "location": "Construction Site",
+      "time": "A",
+      "dialogue": "Heat stroke is the number one thing I treat out here.",
+      "question": "Do you drink enough water?",
+      "responses": [
+        {
+          "text": "Yes, I carry a bottle everywhere.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "When I remember.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "Only soft drinks.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "nurse_bar_a",
+      "location": "Bar",
+      "time": "A",
+      "dialogue": "One drink after a shift. Just one. Nurse's orders.",
+      "question": "Want to share a table?",
+      "responses": [
+        {
+          "text": "Sure, you've earned a break.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Just for a bit.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "Let's order shots!",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "nurse_bar_n",
+      "location": "Bar",
+      "time": "N",
+      "dialogue": "My co-workers dragged me out. I'd rather be in bed.",
+      "question": "Want to get out of here?",
+      "responses": [
+        {
+          "text": "Let's grab a quiet bite.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Let's stay a little longer.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "No way, the night's just starting!",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "nurse_club_n",
+      "location": "Club",
+      "time": "N",
+      "dialogue": "I'm on call in case anyone overdoes it tonight.",
+      "question": "Promise you'll stay safe tonight?",
+      "responses": [
+        {
+          "text": "I promise.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "I'll try.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "No promises!",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "nurse_coffee_shop_m",
+      "location": "Coffee Shop",
+      "time": "M",
+      "dialogue": "Grabbing coffee before my shift. Four hours of sleep and counting.",
+      "question": "How do you take your coffee?",
+      "responses": [
+        {
+          "text": "Black and strong.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Lots of cream and sugar.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "I don't drink coffee.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "nurse_coffee_shop_d",
+      "location": "Coffee Shop",
+      "time": "D",
+      "dialogue": "Double espresso. Don't judge me.",
+      "question": "How many coffees have you had today?",
+      "responses": [
+        {
+          "text": "Same as you, too many.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Just one.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "Coffee is for the weak.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "nurse_coffee_shop_a",
+      "location": "Coffee Shop",
+      "time": "A",
+      "dialogue": "A post-shift pastry. My one treat.",
+      "question": "Sweet or savoury?",
+      "responses": [
+        {
+          "text": "Sweet, you deserve it.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Savoury.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "I don't do treats.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "nurse_gym_m",
+      "location": "Gym",
+      "time": "M",
+      "dialogue": "Twelve-hour shifts need a strong back.",
+      "question": "Do you stretch before working out?",
+      "responses": [
+        {
+          "text": "Always.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Sometimes.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "Stretching's a waste of time.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "nurse_gym_d",
+      "location": "Gym",
+      "time": "D",
+      "dialogue": "Squeezing in a workout between shifts.",
+      "question": "What's your favourite exercise?",
+      "responses": [
+        {
+          "text": "Yoga, good for recovery.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Running.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "I don't exercise.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "nurse_gym_a",
+      "location": "Gym",
+      "time": "A",
+      "dialogue": "Watch your form! I see so many back injuries from bad lifting.",
+      "question": "Will you let me correct your form?",
+      "responses": [
+        {
+          "text": "Please do.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "If you have to.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "I know what I'm doing.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "nurse_gym_n",
+      "location": "Gym",
+      "time": "N",
+      "dialogue": "Night shift workouts. Empty gym, just how I like it.",
+      "question": "Night owl or early bird?",
+      "responses": [
+        {
+          "text": "Whatever my schedule needs.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Early bird.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "I never sleep, it's overrated.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "nurse_shopping_centre_m",
+      "location": "Shopping Centre",
+      "time": "M",
+      "dialogue": "Buying new scrubs. The last pair didn't survive a bad shift.",
+      "question": "Blue or green scrubs?",
+      "responses": [
+        {
+          "text": "Blue, very calming.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Green.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "Neither, they're ugly.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "nurse_shopping_centre_d",
+      "location": "Shopping Centre",
+      "time": "D",
+      "dialogue": "Pharmacy run. We keep running out of basics.",
+      "question": "Do you keep a first aid kit at home?",
+      "responses": [
+        {
+          "text": "Yes, fully stocked.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Somewhere, I think.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "What for?",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "nurse_shopping_centre_a",
+      "location": "Shopping Centre",
+      "time": "A",
+      "dialogue": "Looking for comfy shoes. My feet are killing me.",
+      "question": "Comfort or style?",
+      "responses": [
+        {
+          "text": "Comfort, every time.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "A bit of both.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "Style, pain is fashion.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    }
+  ]
+}

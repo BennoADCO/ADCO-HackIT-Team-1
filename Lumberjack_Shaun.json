@@ -1,0 +1,341 @@
+{
+  "character": "Lumberjack",
+  "availability": [
+    "M",
+    "A"
+  ],
+  "favourite_items": [
+    "Axe",
+    "Flannel Shirt",
+    "Maple Syrup"
+  ],
+  "secret_item": {
+    "name": "Marshmallows",
+    "also_liked_by": "Party"
+  },
+  "contested_secret_items": [
+    {
+      "name": "Band-Aids",
+      "primary_character": "Nurse"
+    }
+  ],
+  "favour_values": {
+    "best": 2,
+    "neutral": 0,
+    "wrong": -1
+  },
+  "scenes": [
+    {
+      "id": "lumberjack_hospital_m",
+      "location": "Hospital",
+      "time": "M",
+      "dialogue": "Splinter the size of a pencil. Walked it off for two days.",
+      "question": "Would you have come in sooner?",
+      "responses": [
+        {
+          "text": "Nah, I'd tough it out too.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Probably.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "I'd call an ambulance.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "lumberjack_hospital_a",
+      "location": "Hospital",
+      "time": "A",
+      "dialogue": "Dropping off firewood for the hospital fundraiser.",
+      "question": "Want to help me stack it?",
+      "responses": [
+        {
+          "text": "Sure, let's do it.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Just a few logs.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "I'll get splinters.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "lumberjack_uni_campus_m",
+      "location": "Uni Campus",
+      "time": "M",
+      "dialogue": "Giving a forestry talk to the environmental students.",
+      "question": "Do you care about the environment?",
+      "responses": [
+        {
+          "text": "Yes, I plant trees every year.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "I recycle.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "Not really.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "lumberjack_uni_campus_a",
+      "location": "Uni Campus",
+      "time": "A",
+      "dialogue": "Nice campus. Not enough trees, though.",
+      "question": "City or countryside?",
+      "responses": [
+        {
+          "text": "Countryside.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Somewhere in between.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "City, always.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "lumberjack_construction_site_m",
+      "location": "Construction Site",
+      "time": "M",
+      "dialogue": "Mornin'! Just dropped off timber. Nothing beats fresh-cut pine.",
+      "question": "You ever work with your hands?",
+      "responses": [
+        {
+          "text": "Yeah, I love building things.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "A little.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "No, I'd rather pay someone.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "lumberjack_construction_site_a",
+      "location": "Construction Site",
+      "time": "A",
+      "dialogue": "Long day. Built the frame for this whole second floor.",
+      "question": "Want to see what I built?",
+      "responses": [
+        {
+          "text": "Show me!",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Quickly.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "It's just wood.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "lumberjack_bar_a",
+      "location": "Bar",
+      "time": "A",
+      "dialogue": "One cold beer after work. That's the rule.",
+      "question": "What are you drinking?",
+      "responses": [
+        {
+          "text": "A beer.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Just a soft drink.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "Something pink with an umbrella.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "lumberjack_coffee_shop_m",
+      "location": "Coffee Shop",
+      "time": "M",
+      "dialogue": "Black coffee and a bacon roll. Breakfast of champions.",
+      "question": "What's your ideal breakfast?",
+      "responses": [
+        {
+          "text": "Pancakes with maple syrup.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Toast.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "I skip breakfast.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "lumberjack_coffee_shop_a",
+      "location": "Coffee Shop",
+      "time": "A",
+      "dialogue": "Filling my thermos, then heading back to the woods.",
+      "question": "Ever been camping?",
+      "responses": [
+        {
+          "text": "Loads, I love it.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Once or twice.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "Never, too many bugs.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "lumberjack_gym_m",
+      "location": "Gym",
+      "time": "M",
+      "dialogue": "Early lift before work.",
+      "question": "Could you carry a log on your shoulder?",
+      "responses": [
+        {
+          "text": "Let's find out!",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Maybe a small one.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "Why would I?",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "lumberjack_gym_a",
+      "location": "Gym",
+      "time": "A",
+      "dialogue": "Chopping wood is my workout, but the rain kept me inside.",
+      "question": "Where would you rather spend a weekend?",
+      "responses": [
+        {
+          "text": "A cabin in the woods.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Anywhere with good food.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "A fancy city hotel.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "lumberjack_shopping_centre_m",
+      "location": "Shopping Centre",
+      "time": "M",
+      "dialogue": "Need new work boots. These have seen three winters.",
+      "question": "What matters most in boots?",
+      "responses": [
+        {
+          "text": "Tough and waterproof.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Comfort.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "Whatever's trending.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "lumberjack_shopping_centre_a",
+      "location": "Shopping Centre",
+      "time": "A",
+      "dialogue": "Help me pick a flannel.",
+      "question": "Red or green?",
+      "responses": [
+        {
+          "text": "Red, a classic.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Green.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "Neither, flannel's out of style.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    }
+  ]
+}

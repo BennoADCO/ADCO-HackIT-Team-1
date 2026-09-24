@@ -1,0 +1,381 @@
+/* ================================================================
+   WIPE OUT - the part after the crane
+   ================================================================
+   Everything about how this half LOOKS is in this one file. Colours,
+   sizes, spacing. If you want to retheme the game, you only need to
+   be in here.
+
+   The colours are listed once at the top, as "variables". Change one
+   of those and it updates everywhere it is used.
+   ================================================================ */
+
+:root {
+  --ink:        #f4efe6;   /* the main text */
+  --ink-dim:    #b6ad9e;   /* quieter text */
+  --panel:      rgba(18, 16, 22, 0.82);   /* the dialogue box */
+  --panel-edge: rgba(255, 255, 255, 0.14);
+  --accent:     #ffc861;   /* character names, highlights */
+  --reply:      rgba(255, 255, 255, 0.07);
+  --reply-hot:  rgba(255, 200, 97, 0.22); /* a reply under the mouse */
+  --backdrop:   #0d0b11;   /* behind everything */
+  --warn:       #ff8a80;
+
+  --radius: 14px;
+  --panel-max: 1180px;     /* the dialogue never gets wider than this */
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: var(--backdrop);
+  color: var(--ink);
+  font-family: "Segoe UI", system-ui, Arial, sans-serif;
+  overflow: hidden;
+}
+
+/* Each screen fills the window. Only one is ever on show. */
+.screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+}
+.screen[hidden] { display: none; }
+
+/* A plain, quiet button. Used for "back" and "start again". */
+.plain-button {
+  font: inherit;
+  color: var(--ink-dim);
+  background: transparent;
+  border: 1px solid var(--panel-edge);
+  border-radius: 999px;
+  padding: 10px 22px;
+  cursor: pointer;
+  transition: color .15s, border-color .15s, background .15s;
+}
+.plain-button:hover,
+.plain-button:focus-visible {
+  color: var(--ink);
+  border-color: var(--accent);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+
+/* ================================================================
+   THE MAP
+   ================================================================ */
+
+.map-header {
+  padding: 5vh 6vw 0;
+  flex: 0 0 auto;
+}
+.map-header h1 {
+  margin: 0;
+  font-size: clamp(34px, 5vw, 62px);
+  letter-spacing: -0.02em;
+}
+.map-sub {
+  margin: 8px 0 0;
+  color: var(--ink-dim);
+  font-size: clamp(15px, 1.4vw, 20px);
+}
+
+/* The location cards. They lay themselves out in as many columns as
+   fit, so this works on a laptop or a big meeting-room screen. */
+.map-grid {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 26px;
+  align-content: start;
+  padding: 4vh 6vw;
+  overflow-y: auto;
+}
+
+.location-card {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--panel-edge);
+  border-radius: var(--radius);
+  overflow: hidden;
+  cursor: pointer;
+  padding: 0;
+  background-color: #1a1720;
+  background-size: cover;
+  background-position: center;
+  text-align: left;
+  font: inherit;
+  color: var(--ink);
+  transition: transform .18s ease, border-color .18s ease;
+}
+.location-card:hover,
+.location-card:focus-visible {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+}
+
+/* A dark wash so the words stay readable over any picture. */
+.location-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top,
+              rgba(0, 0, 0, 0.88) 0%,
+              rgba(0, 0, 0, 0.35) 45%,
+              rgba(0, 0, 0, 0.1) 100%);
+}
+
+.location-name {
+  position: absolute;
+  left: 22px;
+  bottom: 48px;
+  font-size: clamp(20px, 2vw, 28px);
+  font-weight: 600;
+}
+.location-who {
+  position: absolute;
+  left: 22px;
+  bottom: 22px;
+  font-size: 16px;
+  color: var(--accent);
+}
+.location-who.is-empty { color: var(--ink-dim); }
+
+.map-footer {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 0 6vw 4vh;
+  color: var(--ink-dim);
+  font-size: 15px;
+}
+.map-footer p { margin: 0; }
+
+
+/* ================================================================
+   WHO IS HERE
+   ================================================================ */
+
+#people-screen {
+  background-size: cover;
+  background-position: center;
+  align-items: center;
+  justify-content: center;
+}
+/* Darken whatever background is behind the panel. */
+#people-screen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 7, 11, 0.74);
+}
+
+.people-panel {
+  position: relative;
+  background: var(--panel);
+  border: 1px solid var(--panel-edge);
+  border-radius: var(--radius);
+  padding: 46px 52px;
+  max-width: 760px;
+  text-align: center;
+}
+.people-panel h2 {
+  margin: 0 0 28px;
+  font-size: clamp(26px, 3vw, 38px);
+}
+
+.people-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  justify-content: center;
+  align-items: center;
+}
+
+.person-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 150px;
+  padding: 16px;
+  font: inherit;
+  font-size: 18px;
+  color: var(--ink);
+  background: var(--reply);
+  border: 1px solid var(--panel-edge);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background .15s, border-color .15s;
+}
+.person-button:hover,
+.person-button:focus-visible {
+  background: var(--reply-hot);
+  border-color: var(--accent);
+}
+.person-portrait {
+  width: 84px;
+  height: 84px;
+  object-fit: cover;
+  object-position: top center;
+  border-radius: 50%;
+  background: #262b38;
+}
+
+.nobody-here {
+  width: 100%;
+  margin: 0 0 24px;
+  color: var(--ink-dim);
+  font-size: 19px;
+}
+
+
+/* ================================================================
+   A SCENE
+   ================================================================ */
+
+.scene-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+}
+
+/* The character. Stands on the bottom of the screen, scaling with the
+   window so they are never cut off on a small laptop. */
+.sprite {
+  position: absolute;
+  bottom: 0;
+  height: min(78vh, 900px);
+  width: auto;
+  object-fit: contain;
+  object-position: bottom center;
+  /* Lifted clear of the dialogue box, which sits over the bottom. */
+  bottom: 14vh;
+  filter: drop-shadow(0 18px 40px rgba(0, 0, 0, 0.55));
+  pointer-events: none;
+}
+.anchor-left   { left: 8vw;  }
+.anchor-right  { right: 8vw; }
+.anchor-centre { left: 50%; transform: translateX(-50%); }
+
+/* The dialogue box. */
+.dialogue {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 4vh;
+  width: min(var(--panel-max), 88vw);
+  background: var(--panel);
+  backdrop-filter: blur(9px);
+  border: 1px solid var(--panel-edge);
+  border-radius: var(--radius);
+  padding: 30px 38px 26px;
+  cursor: pointer;
+}
+
+.speaker {
+  margin: 0 0 10px;
+  color: var(--accent);
+  font-size: clamp(17px, 1.6vw, 22px);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.line {
+  margin: 0;
+  font-size: clamp(19px, 2vw, 29px);
+  line-height: 1.45;
+  min-height: 2.9em;   /* stops the box jumping about between short
+                          and long lines */
+}
+
+/* Up to four replies. Two columns on a wide screen, one on a narrow. */
+.replies {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+}
+.replies:empty { margin-top: 0; }
+
+.reply {
+  font: inherit;
+  font-size: clamp(16px, 1.4vw, 20px);
+  text-align: left;
+  color: var(--ink);
+  background: var(--reply);
+  border: 1px solid var(--panel-edge);
+  border-left: 3px solid transparent;
+  border-radius: 10px;
+  padding: 15px 20px;
+  cursor: pointer;
+  transition: background .14s, border-color .14s, transform .14s;
+}
+.reply:hover,
+.reply:focus-visible {
+  background: var(--reply-hot);
+  border-color: var(--accent);
+  border-left-color: var(--accent);
+  transform: translateX(3px);
+}
+.reply-leave { color: var(--ink-dim); }
+
+.continue-prompt {
+  display: block;
+  margin-top: 16px;
+  text-align: right;
+  font-size: 14px;
+  color: var(--ink-dim);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 0.35; }
+  50%      { opacity: 1; }
+}
+
+
+/* ================================================================
+   PROBLEMS PANEL
+   ================================================================
+   Only appears when the checker finds a mistake in a character file.
+   ================================================================ */
+
+.problems {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 50;
+  max-width: 560px;
+  max-height: 55vh;
+  overflow-y: auto;
+  background: #2a1414;
+  border: 1px solid var(--warn);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  font-size: 14px;
+  line-height: 1.55;
+}
+.problems[hidden] { display: none; }
+.problems h2 {
+  margin: 0 0 12px;
+  font-size: 17px;
+  color: var(--warn);
+}
+.problems ul {
+  margin: 0 0 16px;
+  padding-left: 20px;
+}
+.problems li { margin-bottom: 8px; }
+
+
+/* On a phone or a very narrow window, give the text more room. */
+@media (max-width: 700px) {
+  .dialogue { padding: 22px 22px 20px; bottom: 2vh; width: 94vw; }
+  .sprite   { height: 58vh; bottom: 24vh; }
+  .map-grid { grid-template-columns: 1fr; padding: 3vh 5vw; }
+}

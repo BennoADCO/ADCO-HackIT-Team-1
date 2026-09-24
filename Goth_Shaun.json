@@ -1,0 +1,148 @@
+{
+  "character": "Goth",
+  "availability": [
+    "N"
+  ],
+  "favourite_items": [
+    "Black Rose",
+    "Skull Ring",
+    "Eyeliner"
+  ],
+  "secret_item": {
+    "name": "Candles",
+    "also_liked_by": "Nurse"
+  },
+  "contested_secret_items": [
+    {
+      "name": "Black Nail Polish",
+      "primary_character": "Party"
+    }
+  ],
+  "favour_values": {
+    "best": 2,
+    "neutral": 0,
+    "wrong": -1
+  },
+  "scenes": [
+    {
+      "id": "goth_hospital_n",
+      "location": "Hospital",
+      "time": "N",
+      "dialogue": "Visiting my grandmother. Hospitals at night are strangely beautiful.",
+      "question": "Do you find silence comforting?",
+      "responses": [
+        {
+          "text": "Yes, very.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Sometimes.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "No, it's creepy.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "goth_uni_campus_n",
+      "location": "Uni Campus",
+      "time": "N",
+      "dialogue": "Everyone avoids the old cemetery by campus. I read there. It's peaceful.",
+      "question": "Do you believe in ghosts?",
+      "responses": [
+        {
+          "text": "Yes, I'd love to meet one.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "I'm not sure.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "No, that's silly.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "goth_bar_n",
+      "location": "Bar",
+      "time": "N",
+      "dialogue": "They play real music here after ten. Not that chart garbage.",
+      "question": "What music are you into?",
+      "responses": [
+        {
+          "text": "Post-punk and darkwave.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "A bit of everything.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "Top 40 pop.",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "goth_club_n",
+      "location": "Club",
+      "time": "N",
+      "dialogue": "The lights are too bright. I only come for the DJ in the back room.",
+      "question": "What's your favourite time of day?",
+      "responses": [
+        {
+          "text": "Midnight.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Doesn't matter to me.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "Early morning, sunrises!",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    },
+    {
+      "id": "goth_gym_n",
+      "location": "Gym",
+      "time": "N",
+      "dialogue": "I come at night so no one talks to me. Yet here you are.",
+      "question": "Why are you here so late?",
+      "responses": [
+        {
+          "text": "I prefer it empty too.",
+          "type": "best",
+          "favour": 2
+        },
+        {
+          "text": "Only time I'm free.",
+          "type": "neutral",
+          "favour": 0
+        },
+        {
+          "text": "I wanted someone to chat with!",
+          "type": "wrong",
+          "favour": -1
+        }
+      ]
+    }
+  ]
+}
