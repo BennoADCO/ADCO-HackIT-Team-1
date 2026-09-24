@@ -254,6 +254,10 @@ function showNobodyHere(locationId) {
 // Points a picture element at a character's sprite. If that file is
 // missing, a plain stand-in is drawn instead, so a character with no
 // artwork yet still shows up and can still be talked to.
+//
+// The character pictures are drawn on white, so on the way through we
+// ask pictures.js to rub that white background out. If it cannot, the
+// picture is shown as it is and the game carries on regardless.
 function setSpriteSource(imageElement, character) {
   imageElement.alt = character.name;
   imageElement.onerror = function () {
@@ -261,10 +265,23 @@ function setSpriteSource(imageElement, character) {
                                    // stand-in would loop forever
     imageElement.src = placeholderSprite(character.name);
   };
-  if (character.sprite) {
-    imageElement.src = character.sprite;
-  } else {
+
+  // No picture drawn for them yet: show the stand-in.
+  if (!character.sprite) {
     imageElement.src = placeholderSprite(character.name);
+    return;
+  }
+
+  // Cleaned this one up earlier: use the copy we kept.
+  if (cleanedPictures[character.sprite]) {
+    imageElement.src = cleanedPictures[character.sprite];
+    return;
+  }
+
+  // Show it as it is right now, then clean it up and swap it in.
+  imageElement.src = character.sprite;
+  if (REMOVE_WHITE_BACKGROUNDS) {
+    cleanPictureAndSwapIn(character.sprite, imageElement);
   }
 }
 

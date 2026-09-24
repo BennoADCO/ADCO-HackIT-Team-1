@@ -8,10 +8,10 @@
 //    LOCATIONS  - the places you can visit
 //    CHARACTERS - the people you can meet
 //
-//  A character file (characters/mia/mia.js) puts itself on the shelf
+//  A character file (characters/goth/goth.js) puts itself on the shelf
 //  like this:
 //
-//    CHARACTERS['mia'] = { ... };
+//    CHARACTERS['goth'] = { ... };
 //
 //  and a location file does the same with LOCATIONS. Nothing is
 //  downloaded or read from disk while the game is running - every file
