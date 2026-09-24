@@ -18,6 +18,7 @@ function startDatingGame() {
   loadProgress();
   reportAnyProblems();
   setUpControls();
+  setUpMusic();
   showMap();
 }
 

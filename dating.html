@@ -18,7 +18,8 @@
      5. validate.js   - the typo checker
      6. screens.js    - the map and the scene
      7. conversation.js - running a chat
-     8. main.js       - starts everything. Must be LAST.
+     8. music.js      - the background music
+     9. main.js       - starts everything. Must be LAST.
 
    ADDING A CHARACTER? Add a <script> line for them below, next to
    Mia's, or the game will never know they exist.
@@ -99,6 +100,10 @@
 <aside id="problems" class="problems" hidden></aside>
 
 
+<!-- ============ MUSIC ON/OFF ============ -->
+<button id="music-toggle" class="music-toggle" aria-label="Mute music" title="Mute music">&#128266;</button>
+
+
 <!-- The game's files, in load order. -->
 <script src="js/dating/registry.js"></script>
 <script src="js/dating/state.js"></script>
@@ -113,6 +118,7 @@
 <script src="js/dating/validate.js"></script>
 <script src="js/dating/screens.js"></script>
 <script src="js/dating/conversation.js"></script>
+<script src="js/dating/music.js"></script>
 <script src="js/dating/main.js"></script>
 
 </body>
