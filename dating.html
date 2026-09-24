@@ -19,10 +19,11 @@
      6. pictures.js   - rubs the white background off the people
      7. screens.js    - the map and the scene
      8. conversation.js - running a chat
-     9. main.js       - starts everything. Must be LAST.
+     9. music.js      - the background music
+    10. main.js       - starts everything. Must be LAST.
 
-   ADDING A CHARACTER? Add a <script> line for them below, next to
-   Mia's, or the game will never know they exist.
+   ADDING A CHARACTER? Add a <script> line for them below, next to the
+   others, or the game will never know they exist.
   ================================================================
 -->
 <html lang="en">
@@ -103,6 +104,10 @@
 <aside id="problems" class="problems" hidden></aside>
 
 
+<!-- ============ MUSIC ON/OFF ============ -->
+<button id="music-toggle" class="music-toggle" aria-label="Mute music" title="Mute music">&#128266;</button>
+
+
 <!-- The game's files, in load order. -->
 <script src="js/dating/registry.js"></script>
 <script src="js/dating/state.js"></script>
@@ -121,6 +126,7 @@
 <script src="js/dating/pictures.js"></script>
 <script src="js/dating/screens.js"></script>
 <script src="js/dating/conversation.js"></script>
+<script src="js/dating/music.js"></script>
 <script src="js/dating/main.js"></script>
 
 </body>
